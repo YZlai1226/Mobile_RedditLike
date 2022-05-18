@@ -4,9 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen.js';
-import TestScreen from './screens/TestScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
 import LoginScreen from './screens/LoginScreen.js';
+import PostScreen from './screens/PostScreen.js';
+import SubredditScreen from './screens/SubredditScreen.js';
 import Logo from './assets/LogoWhite.png';
 
 const Stack = createNativeStackNavigator();
@@ -44,18 +45,21 @@ function App() {
             // })}
             
             />
-        <Stack.Screen name="TestScreen" component={TestScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        {/* <Stack.Screen name="Subreddit" component={SubredditScreen} /> */}
-        {/* <Stack.Screen name="Post" component={PostScreen} /> */}
+        <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
+        <Stack.Screen name="PostScreen" component={PostScreen} />
 
       </Stack.Navigator>
-    </NavigationContainer >
+    </NavigationContainer>
     );
     // }
     // else {
+      // <NavigationContainer>
+      {/* <Stack.Navigator/> */}
       // <Stack.Screen name="Login" component={LoginScreen} />
-    // }
+      // </Stack.Navigator>
+      // </NavigationContainer>
+      // }
   }
   
   export default App;

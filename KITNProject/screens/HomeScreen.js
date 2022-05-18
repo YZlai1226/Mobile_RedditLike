@@ -2,6 +2,7 @@ import * as React from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
 import { Button, Text, View, Image } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
+import PostsManager from './../components/PostsManager.js';
 
 function LogoTitle() {
   return (
@@ -26,10 +27,7 @@ function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>I am the Home Page !!</Text>
-      <Button
-        title="Go to Test"
-        onPress={() => navigation.navigate('TestScreen')}
-      />
+      <PostsManager navigation={navigation}/>
     </View>
   );
 }
