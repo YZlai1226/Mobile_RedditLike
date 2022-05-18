@@ -1,9 +1,24 @@
 import * as React from 'react';
-import { StatusBar } from 'expo-status-bar';
-// import {NavigationContainer} from '@react-navigation/native';
 import { Button, Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import axios from 'axios';
+
 
 function UserProfile() {
+  console.log("object");
+  const [UserData, setUserData] = React.useState([]);
+
+  async function GetUserData() {
+    const data = await axios.get("https://oauth.reddit.com/api/v1/me", {
+      headers: { 'Authorization': 'Bearer 1825370484862-mXj10P1oQPhzO8HqNymlmko6KcrxPw' }
+    })
+    setUserData(data.data)
+  }
+
+  React.useEffect(() => {
+    GetUserData()
+  },
+    []);
+
   return (
     <View>
       <View style={{
@@ -19,7 +34,7 @@ function UserProfile() {
             source={{
               width: 80,
               height: 80,
-              uri: "https:/picsum.photos/80/80"
+              uri: "https://www.redditstatic.com/avatars/defaults/v2/avatar_default_6.png"
             }}
           />
         </TouchableOpacity>
@@ -36,42 +51,61 @@ function UserProfile() {
                 borderColor: 'gray',
                 borderWidth: 1
               }}
-              defaultValue="Username!"
+              defaultValue={UserData.name}
             />
           </View>
+
           <View>
-            <Text>e-mail : </Text>
+            <Text>description : </Text>
             <TextInput
               style={{
                 height: 25,
                 borderColor: 'gray',
                 borderWidth: 1
               }}
-              defaultValue="toto@toto.fr"
+              defaultValue={UserData.subreddit.description}
             />
           </View>
-          <View>
-            <Text>Gender</Text>
-            <TextInput
-              style={{
-                height: 25,
-                borderColor: 'gray',
-                borderWidth: 1
-              }}
-              defaultValue="M"
-            />
-          </View>
+
           <View>
             <Text>about me</Text>
             <TextInput
               style={{
                 height: 50,
-                width: 200,
                 borderColor: 'gray',
                 borderWidth: 1
               }}
               defaultValue="I love pizza!"
             />
+
+            <View style={{
+              flexDirection: 'row',
+            }}>
+              <Text>Trophy Case : </Text>
+
+              <Image
+                source={{
+                  width: 50,
+                  height: 51,
+                  uri: "https:/picsum.photos/50/51"
+                }}
+              />
+              <Image
+                source={{
+                  width: 51,
+                  height: 50,
+                  uri: "https:/picsum.photos/51/50"
+                }}
+              />
+              <Image
+                source={{
+                  width: 50,
+                  height: 50,
+                  uri: "https:/picsum.photos/50/50"
+                }}
+              />
+            </View>
+
 
           </View>
         </View>
