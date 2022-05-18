@@ -14,6 +14,7 @@ function LogoTitle() {
 }
 
 function HomeScreen({ navigation }) {
+  console.log(navigation.access_token);
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
     headerRight: () => (

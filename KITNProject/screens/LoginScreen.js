@@ -5,7 +5,13 @@ import { Button, Text, View } from 'react-native';
 function LoginScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>I am the Login Page !!</Text>
+            <Button
+        disabled={!request}
+        title="Login"
+        onPress={() => {
+          promptAsync();
+        }}
+      />
     </View>
   );
 }
