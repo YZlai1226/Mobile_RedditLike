@@ -11,6 +11,8 @@ function UserProfile() {
     const data = await axios.get("https://oauth.reddit.com/api/v1/me", {
       headers: { 'Authorization': 'Bearer 1825370484862-mXj10P1oQPhzO8HqNymlmko6KcrxPw' }
     })
+    console.log("Subreddit", UserData);
+    console.log("description", UserData.subreddit.description);
     setUserData(data.data)
   }
 
@@ -51,7 +53,7 @@ function UserProfile() {
                 borderColor: 'gray',
                 borderWidth: 1
               }}
-              defaultValue={UserData.name}
+              defaultValue={"UserData.name"}
             />
           </View>
 
@@ -63,7 +65,7 @@ function UserProfile() {
                 borderColor: 'gray',
                 borderWidth: 1
               }}
-              defaultValue={UserData.subreddit.description}
+              defaultValue={"UserData.subreddit.description"}
             />
           </View>
 
