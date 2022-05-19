@@ -10,6 +10,9 @@ import PostScreen from './screens/PostScreen.js';
 import SubredditScreen from './screens/SubredditScreen.js';
 import Logo from './assets/LogoWhite.png';
 import { REDIRECT_URI, CLIENT_ID } from "@env";
+import * as eva from '@eva-design/eva';
+import { default as theme } from './theme.json'; // <-- Import app theme
+import { ApplicationProvider, Layout, Button } from '@ui-kitten/components';
 
 const Stack = createNativeStackNavigator();
 // const Tabs = createBottomTabNavigator();
@@ -55,59 +58,61 @@ export default function App() {
 
   if (isLoggedIn === false) {
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'column-reverse',
-          rowGap: 20,
-          padding: 30,
-          alignItems: 'flex-end',
-        }}>
-
-        <TouchableOpacity
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+        <View
           style={{
-            backgroundColor: 'lavender',
-            borderRadius: 5,
-            padding: 10,
-            width: 100,
-            textAlign: 'center',
-          }}
-        >
-          <Text>Register</Text>
-        </TouchableOpacity>
+            flex: 1,
+            flexDirection: 'column-reverse',
+            rowGap: 20,
+            padding: 30,
+            alignItems: 'flex-end',
+          }}>
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'lavender',
-            borderRadius: 5,
-            padding: 10,
-            width: 100,
-            textAlign: 'center',
-          }}
-          disabled={!request}
-          onPress={() => {
-            promptAsync();
-          }}
-        >
-          <Text>Login</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'lavender',
+              borderRadius: 5,
+              padding: 10,
+              width: 100,
+              textAlign: 'center',
+            }}
+          >
+            <Text>Register</Text>
+          </TouchableOpacity>
 
-        <Text>
-          The reddit client that will make you purr.
-        </Text>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'lavender',
+              borderRadius: 5,
+              padding: 10,
+              width: 100,
+              textAlign: 'center',
+            }}
+            disabled={!request}
+            onPress={() => {
+              promptAsync();
+            }}
+          >
+            <Text>Login</Text>
+          </TouchableOpacity>
 
-        <Text style={{
-          textAlign: 'right',
-          color: 'darkgray',
-          fontSize: 50,
-        }}>
-          Welcome to KITN.
-        </Text>
+          <Text>
+            The reddit client that will make you purr.
+          </Text>
 
-        <View>
+          <Text style={{
+            textAlign: 'right',
+            color: 'darkgray',
+            fontSize: 50,
+          }}>
+            Welcome to KITN.
+          </Text>
 
+          <View>
+
+          </View>
         </View>
-      </View>
+      </ApplicationProvider>
     );
   } else {
     return (
