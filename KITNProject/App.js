@@ -9,9 +9,7 @@ import ProfileScreen from './screens/ProfileScreen.js';
 import PostScreen from './screens/PostScreen.js';
 import SubredditScreen from './screens/SubredditScreen.js';
 import Logo from './assets/LogoWhite.png';
-import Config from "react-native-config";
-
-const getenv = require('getenv');
+import { REDIRECT_URI, CLIENT_ID } from "@env";
 
 const Stack = createNativeStackNavigator();
 // const Tabs = createBottomTabNavigator();
@@ -38,9 +36,9 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: Config.CLIENT_ID,
+      clientId: CLIENT_ID,
       scopes: ['*'],
-      redirectUri: Config.REDIRECT_URI
+      redirectUri: REDIRECT_URI
     },
     discovery
   );
