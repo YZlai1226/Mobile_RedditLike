@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, View, Image, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
-import LoginScreen from './screens/LoginScreen.js';
 import PostScreen from './screens/PostScreen.js';
 import SubredditScreen from './screens/SubredditScreen.js';
 import Logo from './assets/LogoWhite.png';
@@ -39,10 +37,7 @@ export default function App() {
     {
       clientId: 'FQylgxv0CtwJL5pkzGwZ5A',
       scopes: ['*'],
-      redirectUri: makeRedirectUri({
-        // For usage in bare and standalone
-        native: 'exp://10.41.160.161:19000',
-      }),
+      redirectUri: 'exp://10.41.160.161:19000'
     },
     discovery
   );
@@ -50,7 +45,6 @@ export default function App() {
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { code } = response.params;
-      console.log(response);
       AsyncStorage.setItem('access_token', code)
       console.log(AsyncStorage.getItem('access_token'));
       setIsLoggedIn(true);
@@ -60,16 +54,59 @@ export default function App() {
 
   if (isLoggedIn === false) {
     return (
-      <SafeAreaView>
-        <Button
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column-reverse',
+          rowGap: 20,
+          padding: 30,
+          alignItems: 'flex-end',
+        }}>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'lavender',
+            borderRadius: 5,
+            padding: 10,
+            width: 100,
+            textAlign: 'center',
+          }}
+        >
+          <Text>Register</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'lavender',
+            borderRadius: 5,
+            padding: 10,
+            width: 100,
+            textAlign: 'center',
+          }}
           disabled={!request}
-          title="Login"
           onPress={() => {
             promptAsync();
           }}
-        />
-        <StatusBar style="auto" />
-      </SafeAreaView>
+        >
+          <Text>Login</Text>
+        </TouchableOpacity>
+
+        <Text>
+          The reddit client that will make you purr.
+        </Text>
+
+        <Text style={{
+          textAlign: 'right',
+          color: 'darkgray',
+          fontSize: 50,
+        }}>
+          Welcome to KITN.
+        </Text>
+
+        <View>
+
+        </View>
+      </View>
     );
   } else {
     return (
