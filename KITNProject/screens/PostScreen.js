@@ -65,15 +65,12 @@ function PostScreen({ route }) {
               })}
           </View>
           <Text></Text>
-          <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
+              style={{ width: 'auto', height: 200 }}
               source={{
-                width: 100,
-                height: 100,
-                uri: post.thumbnail
+                uri: post.url_overridden_by_dest
               }}
             />
-          </View>
           <Text style={{ color: 'lightgray', fontStyle: 'italic' }}
             onPress={() => Linking.openURL(post.url_overridden_by_dest)}>
             {post.url_overridden_by_dest}

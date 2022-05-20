@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-import { Image, ScrollView, Button } from 'react-native';
+import { Image, ScrollView, Button, Text } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import axios from 'axios';
