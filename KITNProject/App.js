@@ -39,18 +39,20 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: CLIENT_ID,
+      clientId: "FQylgxv0CtwJL5pkzGwZ5A",
       scopes: ['*'],
-      redirectUri: REDIRECT_URI
+      redirectUri: "exp://10.41.160.161:19000"
     },
     discovery
   );
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     if (response?.type === 'success') {
-      const { code } = response.params;
-      AsyncStorage.setItem('access_token', code)
-      console.log(AsyncStorage.getItem('access_token'));
+      const code = response.params.code;
+      console.log('code récupéré', code);
+      await AsyncStorage.setItem('@access_token', code)
+      const codecode = await AsyncStorage.getItem('@access_token')
+      console.log('Code dans AsyncStorage', codecode);
       setIsLoggedIn(true);
       setAccessToken(code);
     }
