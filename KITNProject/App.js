@@ -38,11 +38,9 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: '42EUJ0kpJkr4HpsTFeMtRA',
-      // clientId: CLIENT_ID,
+      clientId: "XFWAmnjJ12hDFqZc2w8eXg",
       scopes: ['*'],
-      redirectUri: 'exp://10.41.97.206:19000'
-      // redirectUri: REDIRECT_URI
+      redirectUri: "exp://10.41.97.225:19000"
     },
     discovery
   );
@@ -59,6 +57,7 @@ export default function App() {
     checkLogin();
     if (response?.type === 'success') {
       const code = response.params.code;
+      console.log('okokokokokokok')
       await AsyncStorage.setItem('@access_token', code)
       setIsLoggedIn(true);
       setAccessToken(code);
