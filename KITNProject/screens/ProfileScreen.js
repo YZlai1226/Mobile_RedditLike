@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { Button, Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import { Button, Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FlatList } from 'react-native';
+import CommentsManager from '../components/CommentsManager';
 
 
 function UserProfile() {
-  console.log("object");
   const [UserData, setUserData] = React.useState([]);
 
   async function GetUserData() {
+    console.log('Fetching user data', data);
     const data = await axios.get("https://oauth.reddit.com/api/v1/me", {
-      headers: { 'Authorization': 'Bearer 1825370484862-mXj10P1oQPhzO8HqNymlmko6KcrxPw' }
+      headers: { 'Authorization': 'Bearer 9458804-gxDmVtNslA9TDbVYbv0mRm1A1I7xdw ' }
     })
-    console.log("Subreddit", UserData);
-    console.log("description", UserData.subreddit.description);
     setUserData(data.data)
   }
 
@@ -21,6 +22,26 @@ function UserProfile() {
   },
     []);
 
+  const [UserActivity, setUserActivity] = React.useState([]);
+
+  async function GetUserActivity() {
+    let pseudo = UserData.name
+    const UserA = await axios.get("https:/reddit.com/user/" + pseudo + ".json", {
+      headers: { 'Authorization': 'Bearer 9458804-gxDmVtNslA9TDbVYbv0mRm1A1I7xdw ' }
+    })
+    setUserActivity(UserA.data.data.children)
+    // console.log("++++++++++++++++++++++++++++++++++++++++++", UserActivity.data.data.children);
+    console.log("////////////////////////", UserActivity);
+  }
+
+  React.useEffect(() => {
+    GetUserActivity()
+  },
+    [UserData]);
+
+    console.log('UserData', UserData);
+    console.log('UserActivity', UserActivity);
+
   return (
     <View>
       <View style={{
@@ -28,89 +49,41 @@ function UserProfile() {
         marginTop: "5%",
         marginLeft: "5%",
         marginRight: "5%",
-        // backgroundColor: "darkorange"
+
       }}>
 
         <TouchableOpacity onPress={() => console.log("image pressed")}>
           <Image
             source={{
-              width: 80,
-              height: 80,
-              uri: "https://www.redditstatic.com/avatars/defaults/v2/avatar_default_6.png"
+              width: 38,
+              height: 60,
+              uri: UserData.snoovatar_img
             }}
           />
         </TouchableOpacity>
 
         <View style={{
           marginLeft: "5%",
-          marginTop: "10%"
+          marginTop: "5%"
         }}>
+
           <View>
-            <Text>Username :</Text>
-            <TextInput
-              style={{
-                height: 25,
-                borderColor: 'gray',
-                borderWidth: 1
-              }}
-              defaultValue={"UserData.name"}
-            />
+            <Text>{UserData.name}</Text>
           </View>
 
           <View>
-            <Text>description : </Text>
-            <TextInput
-              style={{
-                height: 25,
-                borderColor: 'gray',
-                borderWidth: 1
-              }}
-              defaultValue={"UserData.subreddit.description"}
-            />
+            <Text>{UserData.total_karma} Karma points</Text>
           </View>
 
-          <View>
-            <Text>about me</Text>
-            <TextInput
-              style={{
-                height: 50,
-                borderColor: 'gray',
-                borderWidth: 1
-              }}
-              defaultValue="I love pizza!"
-            />
-
-            <View style={{
-              flexDirection: 'row',
-            }}>
-              <Text>Trophy Case : </Text>
-
-              <Image
-                source={{
-                  width: 50,
-                  height: 51,
-                  uri: "https:/picsum.photos/50/51"
-                }}
-              />
-              <Image
-                source={{
-                  width: 51,
-                  height: 50,
-                  uri: "https:/picsum.photos/51/50"
-                }}
-              />
-              <Image
-                source={{
-                  width: 50,
-                  height: 50,
-                  uri: "https:/picsum.photos/50/50"
-                }}
-              />
-            </View>
+          {/* <View>
+            <Text>Description : {UserData.subreddit.public_description}</Text>
+          </View> */}
 
 
-          </View>
+
         </View>
+
+
         <View style={{
           marginLeft: "59%",
           position: 'absolute'
@@ -124,16 +97,33 @@ function UserProfile() {
       </View>
 
 
-      <View >
-        <UserPosts />
-      </View>
+      <ScrollView >
+        {UserActivity.length > 0 &&
+        <CommentsManager comments={UserActivity} />}
+      </ScrollView>
+
+
     </View>
   )
 }
 
-function UserPosts() {
+function UserPosts(props) {
+
+  // console.log('props', props);
+  // console.log('props.comments[0].data.body', props.comments[0].data.body);
+
+
+  const commentsList = props.comments.map((item) => <Text>{item.data.body} {"\n"} </Text>)
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Text>
+      {/* {props.comments[0].data.body} */}
+      {commentsList}
+      </Text>
+      {/* <FlatList
+        data={[props?.comments]}
+        renderItem={({ item }) => <Text>{item.data?.body}</Text>}
+      /> */}
       <SafeAreaView style={{ backgroundColor: "lightblue" }}>
         <Text>Hon hon hon, je suis ONE POST! </Text>
       </SafeAreaView>
