@@ -48,11 +48,19 @@ export default function App() {
     discovery
   );
 
-  React.useEffect(() => {
+  async function checkLogin() {
+    token = await AsyncStorage.getItem('@access_token')
+    console.log('token:', token);
+    if (token) {
+      setIsLoggedIn(true)
+    }
+  }
+
+  React.useEffect(async () => {
+    checkLogin();
     if (response?.type === 'success') {
-      const { code } = response.params;
-      AsyncStorage.setItem('access_token', code)
-      console.log(AsyncStorage.getItem('access_token'));
+      const code = response.params.code;
+      await AsyncStorage.setItem('@access_token', code)
       setIsLoggedIn(true);
       setAccessToken(code);
     }
