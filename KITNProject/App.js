@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen.js';
@@ -12,7 +12,7 @@ import Logo from './assets/LogoWhite.png';
 import { REDIRECT_URI, CLIENT_ID } from "@env";
 import * as eva from '@eva-design/eva';
 import { default as theme } from './theme.json'; // <-- Import app theme
-import { ApplicationProvider, Layout, Button } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Button, Text } from '@ui-kitten/components';
 
 const Stack = createNativeStackNavigator();
 // const Tabs = createBottomTabNavigator();
@@ -59,7 +59,7 @@ export default function App() {
   if (isLoggedIn === false) {
     return (
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-        <View
+        <Layout
           style={{
             flex: 1,
             flexDirection: 'column-reverse',
@@ -68,33 +68,18 @@ export default function App() {
             alignItems: 'flex-end',
           }}>
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'lavender',
-              borderRadius: 5,
-              padding: 10,
-              width: 100,
-              textAlign: 'center',
-            }}
-          >
-            <Text>Register</Text>
-          </TouchableOpacity>
+          <Button>
+            Register
+          </Button>
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'lavender',
-              borderRadius: 5,
-              padding: 10,
-              width: 100,
-              textAlign: 'center',
-            }}
+          <Button
             disabled={!request}
             onPress={() => {
               promptAsync();
             }}
           >
-            <Text>Login</Text>
-          </TouchableOpacity>
+            Login
+            </Button>
 
           <Text>
             The reddit client that will make you purr.
@@ -102,7 +87,7 @@ export default function App() {
 
           <Text style={{
             textAlign: 'right',
-            color: 'darkgray',
+
             fontSize: 50,
           }}>
             Welcome to KITN.
@@ -111,11 +96,12 @@ export default function App() {
           <View>
 
           </View>
-        </View>
+        </Layout>
       </ApplicationProvider>
     );
   } else {
     return (
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
       <NavigationContainer>
         <Stack.Navigator
           accessToken={accessToken}
@@ -142,6 +128,8 @@ export default function App() {
           <Stack.Screen name="PostScreen" component={PostScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+      </ApplicationProvider>
+
     )
   }
 }
