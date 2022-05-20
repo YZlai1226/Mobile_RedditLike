@@ -12,7 +12,6 @@ function SubredditScreen({ route, navigation}) {
 
 
   useEffect(() => {
-    console.log('=========', 'https://www.reddit.com/'+ subRedditName + '/.json')
     axios.get('https://www.reddit.com/'+ subRedditName + '/.json')
       .then((response) => {
         setSubPosts(response.data.data.children)

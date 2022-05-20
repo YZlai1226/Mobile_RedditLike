@@ -8,6 +8,7 @@ function EachPost(props) {
 
         {/* {props.post.length>0 &&
       console.log('here', props.post)} */}
+      
         {/* <Text>{props.data.subreddit}</Text> */}
         
         <Button 
@@ -21,6 +22,11 @@ function EachPost(props) {
         <Button
           title={props.data.title}
           onPress={() => props.navigation.navigate('PostScreen')}
+          onPress={() => {
+          props.navigation.navigate('PostScreen', {
+            postId: props.data.name,
+          });
+        }}
         />
         <Text>=======================================</Text>
     </>

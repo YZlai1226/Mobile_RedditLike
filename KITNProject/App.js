@@ -43,15 +43,18 @@ export default function App() {
     discovery
   );
 
-  React.useEffect(() => {
+   React.useEffect(() => {
     if (response?.type === 'success') {
-      const { code } = response.params;
+      const code = response.params.code;
+      console.log('response is ', response.params.code)
       AsyncStorage.setItem('access_token', code)
       console.log(AsyncStorage.getItem('access_token'));
       setIsLoggedIn(true);
       setAccessToken(code);
     }
   }, [response]);
+
+
 
   if (isLoggedIn === false) {
     return (
