@@ -39,9 +39,11 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: CLIENT_ID,
+      clientId: '42EUJ0kpJkr4HpsTFeMtRA',
+      // clientId: CLIENT_ID,
       scopes: ['*'],
-      redirectUri: REDIRECT_URI
+      redirectUri: 'exp://10.41.97.206:19000'
+      // redirectUri: REDIRECT_URI
     },
     discovery
   );
