@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, ScrollView, Image, Linking } from 'react-native';
+import { View, ScrollView, Image, Linking, StyleSheet } from 'react-native';
 import axios from 'axios';
 import CommentsManager from '../components/CommentsManager';
 import { Card, Layout, Text } from '@ui-kitten/components';
@@ -13,6 +13,7 @@ function PostScreen({ route }) {
   const [subReddit, setSubReddit] = useState();
   const [comments, setComments] = useState([]);
   const [rewards, setRewards] = useState([]);
+  const [date, setDate] = useState([]);
 
   async function getPost() {
     const res = await axios.get('https://api.reddit.com/api/info/?id=' + postId)
@@ -38,7 +39,6 @@ function PostScreen({ route }) {
         })
     }
   }, [subReddit]);
-
 
   return (
     <ScrollView>

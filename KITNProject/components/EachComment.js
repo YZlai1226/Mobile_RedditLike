@@ -7,7 +7,7 @@ function EachComment(props) {
   const [ date, setDate ] = useState()
 
   useEffect(() => {
-    const finalDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(props.data.created)
+    const finalDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(props.data.created_uct)
     setDate(finalDate)
   }, []);
 
