@@ -50,11 +50,17 @@ function EachPost(props) {
 
         <Text
           category='h5'
-            onPress={() => props.navigation.navigate('PostScreen', {
-              postId: props.data.name
-            })}
+          onPress={() => props.navigation.navigate('PostScreen', {
+            postId: props.data.name
+          })}
         >
           {props.data.title}
+        </Text>
+        <Text
+                  category='h8'
+          style={{ fontStyle: 'italic' }}
+        >
+          Posted by {props.data.author_fullname}
         </Text>
         <Text></Text>
 
