@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+import { useAuthRequest } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen.js';
@@ -9,7 +9,6 @@ import ProfileScreen from './screens/ProfileScreen.js';
 import PostScreen from './screens/PostScreen.js';
 import SubredditScreen from './screens/SubredditScreen.js';
 import Logo from './assets/LogoWhite.png';
-import { REDIRECT_URI, CLIENT_ID } from "@env";
 import * as eva from '@eva-design/eva';
 import { default as theme } from './theme.json'; // <-- Import app theme
 import { ApplicationProvider, Layout, Button, Text } from '@ui-kitten/components';
