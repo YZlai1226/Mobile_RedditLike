@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-import { View, Image, ScrollView } from 'react-native';
+import { Image, ScrollView, Button } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import axios from 'axios';
-import { Layout, Button, Text } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 
 function LogoTitle() {
   return (
@@ -30,7 +30,7 @@ function HomeScreen({ navigation }) {
   })
 
   useEffect(() => {
-    axios.get('https://reddit.com/top/.json?count=20')
+    axios.get('https://reddit.com/top/.json?count=4')
       .then((response) => {
         // console.log('data is', response.data);
         setTopPost(response.data.data.children)
@@ -50,7 +50,6 @@ function HomeScreen({ navigation }) {
           padding: 30,
           alignItems: 'flex-end',
         }}>
-        <Text>I am the Home Page !!</Text>
         {topPosts.length > 0 &&
           <PostsManager navigation={navigation} posts={topPosts} />
         }
