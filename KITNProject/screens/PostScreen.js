@@ -59,7 +59,7 @@ function PostScreen({ route }) {
                         uri: reward.icon_url
                       }}
                     />
-                    <Text>{reward.count}</Text>
+                    <Text style={{ color: 'lightgray' }}>{reward.count}</Text>
                   </>
                 )
               })}
@@ -78,6 +78,7 @@ function PostScreen({ route }) {
             {post.url_overridden_by_dest}
           </Text>
           <Text></Text>
+          <Text>Comments</Text>
           {comments.length > 0 &&
             <CommentsManager comments={comments} />
           }
