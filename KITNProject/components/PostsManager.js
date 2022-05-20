@@ -10,7 +10,7 @@ function PostsManager(props) {
 
   return (
     <>
-      <Text>I am the posts Manager !!</Text>
+      {/* <Text>I am the posts Manager !!</Text> */}
       {/* {console.log('my props are ', props.posts)} */}
       {props.posts.length > 0 &&
         props.posts.map((post) => {

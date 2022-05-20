@@ -16,6 +16,7 @@ function LogoTitle() {
 
 function HomeScreen({ navigation }) {
   const [topPosts, setTopPost] = useState([]);
+  console.log(navigation.access_token);
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
     headerRight: () => (
