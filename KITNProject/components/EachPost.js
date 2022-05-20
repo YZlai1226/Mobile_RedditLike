@@ -46,6 +46,7 @@ function EachPost(props) {
         >
           {props.data.subreddit_name_prefixed}
         </Text>
+        <Text></Text>
 
         <Text
           category='h5'
@@ -55,6 +56,7 @@ function EachPost(props) {
         >
           {props.data.title}
         </Text>
+        <Text></Text>
 
         {/* <Button
           style={styles.button}
@@ -71,7 +73,8 @@ function EachPost(props) {
           onPress={() => props.navigation.navigate('PostScreen')}
         /> */}
 
-        {props.data.url_overridden_by_dest &&
+        {[".gif", ".jpg"].some(el => props.data.url_overridden_by_dest.includes(el)) &&
+        // {props.data.url_overridden_by_dest.some(el => ".gif", ".php", ".jpg") &&
           <Image
             style={{ width: 'auto', height: 200 }}
             source={{ uri: props.data.url_overridden_by_dest }}
