@@ -6,7 +6,7 @@ function EachComment(props) {
 
   return (
         <Card style={ styles.card }>
-        <Text style={{ fontStyle: 'bold' }}>{props.data.author}</Text>
+        <Text category='h7'>{props.data.author}</Text>
         <Text></Text>
         <Text>{props.data.body}</Text>
         </Card>
@@ -15,12 +15,10 @@ function EachComment(props) {
 export default EachComment;
 
 const styles = StyleSheet.create({
-  topContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   card: {
-    marginTop: '20px',
-    marginBottom: '20px'
+    marginTop: 5,
+    marginBottom: 5,
+    border: 'none',
+    borderBottom: "3px"
   }
 });

@@ -50,9 +50,9 @@ function EachPost(props) {
 
         <Text
           category='h5'
-          onPress={() => props.navigation.navigate('PostScreen', {
-            postId: props.data.name
-          })}
+            onPress={() => props.navigation.navigate('PostScreen', {
+              postId: props.data.name
+            })}
         >
           {props.data.title}
         </Text>
