@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Button, Image } from 'react-native';
+import { View, StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
 import { Card, Text, Layout } from '@ui-kitten/components';
 
 const styles = StyleSheet.create({
@@ -50,33 +50,25 @@ function EachPost(props) {
 
         <Text
           category='h5'
-            onPress={() => props.navigation.navigate('PostScreen')}
+          onPress={() => props.navigation.navigate('PostScreen', {
+            postId: props.data.name
+          })}
         >
           {props.data.title}
         </Text>
         <Text></Text>
 
-        {/* <Button
-          style={styles.button}
-          status='warning'
-          title={props.data.subreddit_name_prefixed}
-          onPress={() => {
-            props.navigation.navigate('SubredditScreen', {
-              subRedditName: props.data.subreddit_name_prefixed,
-            });
-          }}
-        /> */}
-        {/* <Button
-          title={props.data.title}
-          onPress={() => props.navigation.navigate('PostScreen')}
-        /> */}
 
-        {[".gif", ".jpg"].some(el => props.data.url_overridden_by_dest.includes(el)) &&
-        // {props.data.url_overridden_by_dest.some(el => ".gif", ".php", ".jpg") &&
-          <Image
-            style={{ width: 'auto', height: 200 }}
-            source={{ uri: props.data.url_overridden_by_dest }}
-          />
+        {[".gif", ".jpg"].some(el => props.data.url_overridden_by_dest?.includes(el)) &&
+          <TouchableOpacity onPress={() =>
+            props.navigation.navigate('PostScreen', {
+              postId: props.data.name
+            })}>
+            <Image
+              style={{ width: 'auto', height: 200 }}
+              source={{ uri: props.data.url_overridden_by_dest }}
+            />
+          </TouchableOpacity>
         }
 
       </Card>
