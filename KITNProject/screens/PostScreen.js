@@ -65,12 +65,14 @@ function PostScreen({ route }) {
               })}
           </View>
           <Text></Text>
+          {[".gif", ".jpg"].some(el => post.url_overridden_by_dest?.includes(el)) &&
             <Image
               style={{ width: 'auto', height: 200 }}
               source={{
                 uri: post.url_overridden_by_dest
               }}
             />
+          }
           <Text style={{ color: 'lightgray', fontStyle: 'italic' }}
             onPress={() => Linking.openURL(post.url_overridden_by_dest)}>
             {post.url_overridden_by_dest}
