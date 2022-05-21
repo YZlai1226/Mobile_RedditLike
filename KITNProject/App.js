@@ -54,17 +54,18 @@ export default function App() {
   );
 
   React.useEffect(() => {
-    async function checkLogin() {
-      token = await AsyncStorage.getItem('@access_token')
-      if (token) {
-        setIsLoggedIn(true);
-        return true;
-      } else {
-        return false;
-      }
+    async function retrieveToken() {
+      const retrievedToken = await AsyncStorage.getItem('@access_token');
+      console.log('access token:', retrievedToken);
+      return retrieveToken;
+    };
+    if (retrieveToken()) {
+      setIsLoggedIn(true)
     }
-    async function setToken(code) {
-      console.log('response', response);
+  });
+
+  React.useEffect(() => {
+    async function getToken(code) {
       const url = "https://www.reddit.com/api/v1/access_token";
       const res = await axios({
         method: 'post',
@@ -79,92 +80,87 @@ export default function App() {
           'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo='
         },
       });
-      console.log('res.data:', res.data);
       if (res.data.access_token) {
         await AsyncStorage.setItem('@access_token', res.data.access_token);
-        const retrievedToken = await AsyncStorage.getItem('@access_token');
-        console.log(retrievedToken);
         setIsLoggedIn(true);
       }
     };
 
-    // if (checkLogin() == true) {};
     if (response?.type === 'success') {
-    const code = response.params.code;
-    console.log('code:', code);
-    setToken(code);
-  }
-}, [response]);
+      const code = response.params.code;
+      getToken(code);
+    }
+  }, [response]);
 
-if (isLoggedIn === false) {
-  return (
-    <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-      <Layout
-        style={{
-          flex: 1,
-          flexDirection: 'column-reverse',
-          rowGap: 20,
-          padding: 30,
-          alignItems: 'flex-end',
-        }}>
-
-        <Button>
-          Register
-        </Button>
-
-        <Button
-          disabled={!request}
-          onPress={() => {
-            promptAsync();
-          }}
-        >
-          Login
-        </Button>
-
-        <Text>
-          The reddit client that will make you purr.
-        </Text>
-
-        <Text style={{
-          textAlign: 'right',
-
-          fontSize: 50,
-        }}>
-          Welcome to KITN.
-        </Text>
-
-        <View>
-
-        </View>
-      </Layout>
-    </ApplicationProvider>
-  );
-} else {
-  return (
-    <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-      <NavigationContainer>
-        <Stack.Navigator
-          accessToken={accessToken}
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            headerBackTitleStyle: (props) => <LogoTitle {...props} />,
+  if (isLoggedIn === false) {
+    return (
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+        <Layout
+          style={{
+            flex: 1,
+            flexDirection: 'column-reverse',
+            rowGap: 20,
+            padding: 30,
+            alignItems: 'flex-end',
           }}>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-          />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-          <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
-          <Stack.Screen name="PostScreen" component={PostScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ApplicationProvider>
-  )
-}
+
+          <Button>
+            Register
+          </Button>
+
+          <Button
+            disabled={!request}
+            onPress={() => {
+              promptAsync();
+            }}
+          >
+            Login
+          </Button>
+
+          <Text>
+            The reddit client that will make you purr.
+          </Text>
+
+          <Text style={{
+            textAlign: 'right',
+
+            fontSize: 50,
+          }}>
+            Welcome to KITN.
+          </Text>
+
+          <View>
+
+          </View>
+        </Layout>
+      </ApplicationProvider>
+    );
+  } else {
+    return (
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+        <NavigationContainer>
+          <Stack.Navigator
+            accessToken={accessToken}
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+              headerBackTitleStyle: (props) => <LogoTitle {...props} />,
+            }}>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+            />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
+            <Stack.Screen name="PostScreen" component={PostScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ApplicationProvider>
+    )
+  }
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Text, View, Image, ScrollView } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { ButtonGroup, Input } from '@ui-kitten/components';
 
@@ -18,19 +19,29 @@ function LogoTitle() {
 function HomeScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState('');
+  const [token, setToken] = useState('');
 
+  async function retrieveToken() {
+    const retrievedToken = await AsyncStorage.getItem('@access_token');
+    console.log('access token:', retrievedToken);
+    return retrieveToken;
+  }
+  
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
     headerRight: () => (
       <Button
-        onPress={() => navigation.navigate('ProfileScreen')}
-        title="Profile"
-        color="#fff"
+      onPress={() => navigation.navigate('ProfileScreen')}
+      title="Profile"
+      color="#fff"
       />
-    )
-  })
-
-  useEffect(() => { getBest() }, []);
+      )
+    })
+    
+    useEffect(() => {
+      setToken(retrieveToken());
+      getBest()
+    }, []);
 
   async function getLatest() {
     axios.get('https://reddit.com/new/.json?count=20')
