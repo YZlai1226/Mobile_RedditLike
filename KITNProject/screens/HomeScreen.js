@@ -49,6 +49,8 @@ function HomeScreen({ navigation }) {
     setPosts(res.data.data.children);
   }
 
+  // Search
+
   const [query, setQuery] = useState('')
 
   async function search() {
