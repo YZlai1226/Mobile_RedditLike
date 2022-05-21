@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Text, Container } from 'react-native';
 import EachPost from './EachPost.js';
 
 function PostsManager(props) {
@@ -20,3 +20,4 @@ function PostsManager(props) {
   );
 }
 export default PostsManager;
+

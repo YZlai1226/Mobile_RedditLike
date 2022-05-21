@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-import { Button, Text, View, Image, ScrollView } from 'react-native';
+import { Image, ScrollView, Button, Text } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { ButtonGroup, Input } from '@ui-kitten/components';
+import { Layout, ButtonGroup, Input } from '@ui-kitten/components';
 
 function LogoTitle() {
   return (

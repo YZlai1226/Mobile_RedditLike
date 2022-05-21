@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Button, View, ScrollView } from 'react-native';
 import axios from 'axios';
 import PostsManager from '../components/PostsManager';
 

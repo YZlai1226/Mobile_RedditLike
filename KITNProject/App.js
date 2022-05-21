@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { REDIRECT_URI, CLIENT_ID } from "@env";
@@ -45,7 +45,7 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: "FQylgxv0CtwJL5pkzGwZ5A",
+      clientId: "XFWAmnjJ12hDFqZc2w8eXg",
       scopes: ['*'],
       // redirectUri: "exp://10.41.160.161:19000"
       redirectUri: "exp://192.168.1.61:19000"
