@@ -56,8 +56,7 @@ export default function App() {
   React.useEffect(() => {
     async function retrieveToken() {
       const retrievedToken = await AsyncStorage.getItem('@access_token');
-      console.log('access token:', retrievedToken);
-      return retrieveToken;
+      return retrievedToken;
     };
     if (retrieveToken()) {
       setIsLoggedIn(true)

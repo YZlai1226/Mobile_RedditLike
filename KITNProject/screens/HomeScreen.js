@@ -17,72 +17,42 @@ function LogoTitle() {
 }
 
 function HomeScreen({ navigation }) {
-  const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState('');
   const [token, setToken] = useState('');
+  const [filter, setFilter] = useState('best');
+  const [posts, setPosts] = useState([]);
 
   async function retrieveToken() {
     const retrievedToken = await AsyncStorage.getItem('@access_token');
     console.log('access token:', retrievedToken);
-    return retrieveToken;
+    setToken(retrievedToken);
   }
-  
+
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
     headerRight: () => (
       <Button
-      onPress={() => navigation.navigate('ProfileScreen')}
-      title="Profile"
-      color="#fff"
+        onPress={() => navigation.navigate('ProfileScreen')}
+        title="Profile"
+        color="#fff"
       />
-      )
-    })
-    
-    useEffect(() => {
-      setToken(retrieveToken());
-      getBest()
-    }, []);
+    )
+  })
 
-  async function getLatest() {
-    axios.get('https://reddit.com/new/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('New')
-      })
-  }
-  async function getBest() {
-    axios.get('https://reddit.com/best/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Best')
-      })
-  }
-  async function getTop() {
-    axios.get('https://reddit.com/top/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Top')
-      })
-  }
-  async function getControversial() {
-    axios.get('https://reddit.com/controversial/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Controversial')
-      })
-  }
-  async function getRising() {
-    axios.get('https://reddit.com/rising/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Rising')
-      })
+  useEffect(() => { retrieveToken() }, []);
+
+  useEffect(() => { getPosts() }, [token]);
+
+  useEffect(() => { getPosts() }, [filter]);
+
+  async function getPosts() {
+    const res = await axios.get(`https://oauth.reddit.com/${filter}/.json?count=20`, { headers: { Authorization: 'Bearer ' + token } });
+    setPosts(res.data.data.children);
   }
 
   const [query, setQuery] = useState('')
 
   async function search() {
-    url = `https://www.reddit.com/search/.json?q=${query}`
+    const url = `https://www.reddit.com/search/.json?q=${query}`
     const response = await axios.get(url);
     setPosts(response.data.data.children);
     setFilter(query)
@@ -92,44 +62,45 @@ function HomeScreen({ navigation }) {
     <ScrollView
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text></Text>
-      <Text>Filters:</Text>
       <ButtonGroup>
         <Button
-          onPress={() => getLatest()}
+          onPress={() => setFilter('new')}
           title="New"
         />
 
         <Button
-          onPress={() => getBest()}
+          onPress={() => setFilter('best')}
           title="Best"
         />
 
         <Button
-          onPress={() => getTop()}
+          onPress={() => setFilter('top')}
           title="Top"
         />
 
         <Button
-          onPress={() => getControversial()}
+          onPress={() => setFilter('controversial')}
           title="Controversial"
         />
 
         <Button
-          onPress={() => getRising()}
+          onPress={() => setFilter('rising')}
           title="Rising"
         />
       </ButtonGroup>
 
-      <Input
-        placeholder='Search'
-        value={query}
-        onChangeText={nextQuery => setQuery(nextQuery)}
-      />
+      <ButtonGroup>
+        <Input
+          placeholder='Search'
+          value={query}
+          onChangeText={nextQuery => setQuery(nextQuery)}
+        />
 
-      <Button
-        onPress={() => search()}
-        title="Go"
-      />
+        <Button
+          onPress={() => search()}
+          title="Go"
+        />
+      </ButtonGroup>
 
       <Text>Posts ordered by: {filter}</Text>
       <Text></Text>
