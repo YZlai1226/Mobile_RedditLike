@@ -4,7 +4,7 @@ import { Button, Text, View, Image, ScrollView } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import axios from 'axios';
-import { ButtonGroup } from '@ui-kitten/components';
+import { ButtonGroup, Input } from '@ui-kitten/components';
 
 function LogoTitle() {
   return (
@@ -30,13 +30,7 @@ function HomeScreen({ navigation }) {
     )
   })
 
-  useEffect(() => {
-    axios.get('https://reddit.com/top/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Top')
-      })
-  }, []);
+  useEffect(() => { getBest() }, []);
 
   async function getLatest() {
     axios.get('https://reddit.com/new/.json?count=20')
@@ -45,7 +39,6 @@ function HomeScreen({ navigation }) {
           setFilter('New')
       })
   }
-
   async function getBest() {
     axios.get('https://reddit.com/best/.json?count=20')
       .then((response) => {
@@ -53,7 +46,6 @@ function HomeScreen({ navigation }) {
           setFilter('Best')
       })
   }
-
   async function getTop() {
     axios.get('https://reddit.com/top/.json?count=20')
       .then((response) => {
@@ -61,7 +53,6 @@ function HomeScreen({ navigation }) {
           setFilter('Top')
       })
   }
-
   async function getControversial() {
     axios.get('https://reddit.com/controversial/.json?count=20')
       .then((response) => {
@@ -69,13 +60,21 @@ function HomeScreen({ navigation }) {
           setFilter('Controversial')
       })
   }
-
   async function getRising() {
     axios.get('https://reddit.com/rising/.json?count=20')
       .then((response) => {
         setPosts(response.data.data.children),
           setFilter('Rising')
       })
+  }
+
+  const [query, setQuery] = useState('')
+
+  async function search() {
+    url = `https://www.reddit.com/search/.json?q=${query}`
+    const response = await axios.get(url);
+    setPosts(response.data.data.children);
+    setFilter(query)
   }
 
   return (
@@ -109,6 +108,17 @@ function HomeScreen({ navigation }) {
           title="Rising"
         />
       </ButtonGroup>
+
+      <Input
+        placeholder='Search'
+        value={query}
+        onChangeText={nextQuery => setQuery(nextQuery)}
+      />
+
+      <Button
+        onPress={() => search()}
+        title="Go"
+      />
 
       <Text>Posts ordered by: {filter}</Text>
       <Text></Text>

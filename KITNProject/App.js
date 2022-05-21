@@ -1,21 +1,27 @@
 import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { REDIRECT_URI, CLIENT_ID } from "@env";
+import axios from 'axios';
+import qs from 'qs';
+
+// Components
 import HomeScreen from './screens/HomeScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
 import PostScreen from './screens/PostScreen.js';
 import SubredditScreen from './screens/SubredditScreen.js';
+
+// Style
 import Logo from './assets/LogoWhite.png';
-import { REDIRECT_URI, CLIENT_ID } from "@env";
 import * as eva from '@eva-design/eva';
-import { default as theme } from './theme.json'; // <-- Import app theme
+import { default as theme } from './theme.json';
 import { ApplicationProvider, Layout, Button, Text } from '@ui-kitten/components';
 
 const Stack = createNativeStackNavigator();
-// const Tabs = createBottomTabNavigator();
 
 function LogoTitle() {
   return (
@@ -26,13 +32,13 @@ function LogoTitle() {
   )
 }
 
-// Endpoint
+WebBrowser.maybeCompleteAuthSession();
+
+//Endpoint
 const discovery = {
   authorizationEndpoint: 'https://www.reddit.com/api/v1/authorize',
   tokenEndpoint: 'https://www.reddit.com/api/v1/access_token',
 };
-
-// WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -41,77 +47,101 @@ export default function App() {
     {
       clientId: "FQylgxv0CtwJL5pkzGwZ5A",
       scopes: ['*'],
-      redirectUri: "exp://10.41.160.161:19000"
+      // redirectUri: "exp://10.41.160.161:19000"
+      redirectUri: "exp://192.168.1.61:19000"
     },
     discovery
   );
 
-  async function checkLogin() {
-    token = await AsyncStorage.getItem('@access_token')
-    console.log('token:', token);
-    if (token) {
-      setIsLoggedIn(true)
+  React.useEffect(() => {
+    async function checkLogin() {
+      token = await AsyncStorage.getItem('@access_token')
+      if (token) {
+        setIsLoggedIn(true);
+        return true;
+      } else {
+        return false;
+      }
     }
-  }
+    async function setToken(code) {
+      console.log('response', response);
+      const url = "https://www.reddit.com/api/v1/access_token";
+      const res = await axios({
+        method: 'post',
+        url: url,
+        data: qs.stringify({
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: 'exp://192.168.1.61:19000'
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo='
+        },
+      });
+      console.log('res.data:', res.data);
+      if (res.data.access_token) {
+        await AsyncStorage.setItem('@access_token', res.data.access_token);
+        const retrievedToken = await AsyncStorage.getItem('@access_token');
+        console.log(retrievedToken);
+        setIsLoggedIn(true);
+      }
+    };
 
-  React.useEffect(async () => {
-    checkLogin();
+    // if (checkLogin() == true) {};
     if (response?.type === 'success') {
-      const code = response.params.code;
-      await AsyncStorage.setItem('@access_token', code)
-      setIsLoggedIn(true);
-      setAccessToken(code);
-    }
-  }, [response]);
+    const code = response.params.code;
+    console.log('code:', code);
+    setToken(code);
+  }
+}, [response]);
 
+if (isLoggedIn === false) {
+  return (
+    <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+      <Layout
+        style={{
+          flex: 1,
+          flexDirection: 'column-reverse',
+          rowGap: 20,
+          padding: 30,
+          alignItems: 'flex-end',
+        }}>
 
+        <Button>
+          Register
+        </Button>
 
-  if (isLoggedIn === false) {
-    return (
-      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-        <Layout
-          style={{
-            flex: 1,
-            flexDirection: 'column-reverse',
-            rowGap: 20,
-            padding: 30,
-            alignItems: 'flex-end',
-          }}>
+        <Button
+          disabled={!request}
+          onPress={() => {
+            promptAsync();
+          }}
+        >
+          Login
+        </Button>
 
-          <Button>
-            Register
-          </Button>
+        <Text>
+          The reddit client that will make you purr.
+        </Text>
 
-          <Button
-            disabled={!request}
-            onPress={() => {
-              promptAsync();
-            }}
-          >
-            Login
-            </Button>
+        <Text style={{
+          textAlign: 'right',
 
-          <Text>
-            The reddit client that will make you purr.
-          </Text>
+          fontSize: 50,
+        }}>
+          Welcome to KITN.
+        </Text>
 
-          <Text style={{
-            textAlign: 'right',
+        <View>
 
-            fontSize: 50,
-          }}>
-            Welcome to KITN.
-          </Text>
-
-          <View>
-
-          </View>
-        </Layout>
-      </ApplicationProvider>
-    );
-  } else {
-    return (
-      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+        </View>
+      </Layout>
+    </ApplicationProvider>
+  );
+} else {
+  return (
+    <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
       <NavigationContainer>
         <Stack.Navigator
           accessToken={accessToken}
@@ -128,18 +158,13 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-          // options= {({ navigation, route }) => ({
-
-          // })}
-
           />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
           <Stack.Screen name="PostScreen" component={PostScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-      </ApplicationProvider>
-
-    )
-  }
+    </ApplicationProvider>
+  )
+}
 }
