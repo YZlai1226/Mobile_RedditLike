@@ -12,8 +12,8 @@ function PostsManager(props) {
     <>
       {props.posts.length > 0 &&
         props.posts.map((post) => {
-          return (
-              <EachPost navigation={props.navigation} {...post} ></EachPost>
+          return(
+          <EachPost key={post.id} navigation={props.navigation} {...post} ></EachPost>
           )
         })}
     </>

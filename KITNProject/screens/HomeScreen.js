@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Button, Text } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Layout, ButtonGroup } from '@ui-kitten/components';
+import { Layout, ButtonGroup, Input } from '@ui-kitten/components';
 
 function LogoTitle() {
   return (
@@ -16,8 +17,15 @@ function LogoTitle() {
 }
 
 function HomeScreen({ navigation }) {
+  const [token, setToken] = useState('');
+  const [filter, setFilter] = useState('best');
   const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState('');
+
+  async function retrieveToken() {
+    const retrievedToken = await AsyncStorage.getItem('@access_token');
+    console.log('access token:', retrievedToken);
+    setToken(retrievedToken);
+  }
 
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
@@ -30,86 +38,70 @@ function HomeScreen({ navigation }) {
     )
   })
 
-  useEffect(() => {
-    axios.get('https://reddit.com/top/.json?count=4')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Top')
-      })
-  }, []);
+  useEffect(() => { retrieveToken() }, []);
 
-  async function getLatest() {
-    axios.get('https://reddit.com/new/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('New')
-      })
+  useEffect(() => { getPosts() }, [token]);
+
+  useEffect(() => { getPosts() }, [filter]);
+
+  async function getPosts() {
+    const res = await axios.get(`https://oauth.reddit.com/${filter}/.json?count=20`, { headers: { Authorization: 'Bearer ' + token } });
+    setPosts(res.data.data.children);
   }
 
-  async function getBest() {
-    axios.get('https://reddit.com/best/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Best')
-      })
-  }
+  // Search
 
-  async function getTop() {
-    axios.get('https://reddit.com/top/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Top')
-      })
-  }
+  const [query, setQuery] = useState('')
 
-  async function getControversial() {
-    axios.get('https://reddit.com/controversial/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Controversial')
-      })
-  }
-
-  async function getRising() {
-    axios.get('https://reddit.com/rising/.json?count=20')
-      .then((response) => {
-        setPosts(response.data.data.children),
-          setFilter('Rising')
-      })
+  async function search() {
+    const url = `https://www.reddit.com/search/.json?q=${query}`
+    const response = await axios.get(url);
+    setPosts(response.data.data.children);
+    setFilter(query)
   }
 
   return (
     <ScrollView
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text></Text>
-      <Text>Filters:</Text>
-      <ButtonGroup >
-        <ScrollView horizontal={true}>
-          <Button
-            onPress={() => getLatest()}
-            title="New"
-          />
+      <ButtonGroup>
+        <Button
+          onPress={() => setFilter('new')}
+          title="New"
+        />
 
-          <Button
-            onPress={() => getBest()}
-            title="Best"
-          />
+        <Button
+          onPress={() => setFilter('best')}
+          title="Best"
+        />
 
-          <Button
-            onPress={() => getTop()}
-            title="Top"
-          />
+        <Button
+          onPress={() => setFilter('top')}
+          title="Top"
+        />
 
-          <Button
-            onPress={() => getControversial()}
-            title="Controversial"
-          />
+        <Button
+          onPress={() => setFilter('controversial')}
+          title="Controversial"
+        />
 
-          <Button
-            onPress={() => getRising()}
-            title="Rising"
-          />
-        </ScrollView>
+        <Button
+          onPress={() => setFilter('rising')}
+          title="Rising"
+        />
+      </ButtonGroup>
+
+      <ButtonGroup>
+        <Input
+          placeholder='Search'
+          value={query}
+          onChangeText={nextQuery => setQuery(nextQuery)}
+        />
+
+        <Button
+          onPress={() => search()}
+          title="Go"
+        />
       </ButtonGroup>
 
       <Text>Posts ordered by: {filter}</Text>
