@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-import { Image, ScrollView, Button, Text } from 'react-native';
+import { Image, ScrollView, StyleSheet, Button, Text } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -63,54 +63,79 @@ function HomeScreen({ navigation }) {
 
   return (
     <ScrollView
-      contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text></Text>
-      <ButtonGroup>
-        <Button
-          onPress={() => setFilter('new')}
-          title="New"
-        />
+        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+    <Layout style={styles.container}>
+        <Text></Text>
+        <ButtonGroup>
+          <Button
+            onPress={() => setFilter('new')}
+            title="New"
+          />
 
-        <Button
-          onPress={() => setFilter('best')}
-          title="Best"
-        />
+          <Button
+            onPress={() => setFilter('best')}
+            title="Best"
+          />
 
-        <Button
-          onPress={() => setFilter('top')}
-          title="Top"
-        />
+          <Button
+            onPress={() => setFilter('top')}
+            title="Top"
+          />
 
-        <Button
-          onPress={() => setFilter('controversial')}
-          title="Controversial"
-        />
+          <Button
+            onPress={() => setFilter('controversial')}
+            title="Controversial"
+          />
 
-        <Button
-          onPress={() => setFilter('rising')}
-          title="Rising"
-        />
-      </ButtonGroup>
+          <Button
+            onPress={() => setFilter('rising')}
+            title="Rising"
+          />
+        </ButtonGroup>
 
-      <ButtonGroup>
-        <Input
-          placeholder='Search'
-          value={query}
-          onChangeText={nextQuery => setQuery(nextQuery)}
-        />
+        <ButtonGroup>
+          <Input
+            placeholder='Search'
+            value={query}
+            onChangeText={nextQuery => setQuery(nextQuery)}
+          />
 
-        <Button
-          onPress={() => search()}
-          title="Go"
-        />
-      </ButtonGroup>
+          <Button
+            onPress={() => search()}
+            title="Go"
+          />
+        </ButtonGroup>
 
-      <Text>Posts ordered by: {filter}</Text>
-      <Text></Text>
-      {posts.length > 0 &&
-        <PostsManager navigation={navigation} posts={posts} />
-      }
-    </ScrollView>
+        <Text>Posts ordered by: {filter}</Text>
+        <Text></Text>
+        {posts.length > 0 &&
+          <PostsManager navigation={navigation} posts={posts} />
+        }
+    </Layout>
+      </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  card: {
+    marginTop: 5,
+    marginBottom: 5,
+    width: '100%',
+    height: 'auto',
+    padding: 0,
+  },
+
+  controlContainer: {
+    borderRadius: 4,
+    margin: 2,
+    // padding: 6,
+    justifyContent: 'center',
+    backgroundColor: '#3366FF',
+  },
+});
+
 export default HomeScreen;
