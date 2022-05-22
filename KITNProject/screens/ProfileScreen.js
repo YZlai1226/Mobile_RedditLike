@@ -12,11 +12,21 @@ function UserProfile() {
   async function retrieveToken() {
     const retrievedToken = await AsyncStorage.getItem('@access_token');
     setToken(retrievedToken);
+    const res = await axios.get("https://oauth.reddit.com/api/v1/me.json", {
+      headers: {
+        'User-Agent': 'android:kitnforreddit:0.3',
+        Authorization: 'Bearer ' + retrievedToken
+        }
+    })
+    setUserData(res.data)
   }
   async function GetUserData() {
     try {
-      const res = await axios.get("https://oauth.reddit.com/api/v1/me.json", {
-        headers: { 'Authorization': 'Bearer ' + token }
+      console.log('token:', token);
+      const res = await axios.get("https://oauth.reddit.com/api/v1/me", {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'User-Agent': 'android:kitnforreddit:0.3'}
       })
       console.log('res.data:', res.data);
       setUserData(res.data)
@@ -25,23 +35,34 @@ function UserProfile() {
     }
   }
   async function GetUserActivity() {
+    if (UserData !== []) {
+      try {
+        const res = await axios.get("https://oauth.reddit.com/user/" + UserData.name + ".json", {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        setUserActivity(res.data.data.children)
+        // console.log("++++++++++++++++++++++++++++++++++++++++++", UserActivity.data.data.children);
+        console.log("////////////////////////", UserActivity);
+      } catch {
+        console.log('User activity fetching failed');
+      }
+    }
+  }
+  async function logout() {
     try {
-      const res = await axios.get("https:/reddit.com/user/" + UserData.name + ".json", {
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-      setUserActivity(res.data.data.children)
-      // console.log("++++++++++++++++++++++++++++++++++++++++++", UserActivity.data.data.children);
-      console.log("////////////////////////", UserActivity);
-    } catch {
-      console.log('User activity fetching failed');
+      await AsyncStorage.removeItem('@access_storage');
+      return true;
+    } catch (exception) {
+      console.log(exception);
+      return false;
     }
   }
 
   React.useEffect(() => { retrieveToken() }, []);
 
-  React.useEffect(() => { GetUserData() }, [token]);
+  // React.useEffect(() => { GetUserData() }, [token]);
 
-  /* React.useEffect(() => { GetUserActivity() }, [UserData]); */
+  // React.useEffect(() => { GetUserActivity() }, [UserData]);
 
   if (UserData) {
     return (
@@ -51,9 +72,9 @@ function UserProfile() {
           marginTop: "5%",
           marginLeft: "5%",
           marginRight: "5%",
-  
+
         }}>
-  
+
           <TouchableOpacity onPress={() => console.log("image pressed")}>
             <Image
               source={{
@@ -63,26 +84,29 @@ function UserProfile() {
               }}
             />
           </TouchableOpacity>
-  
+
           <View style={{
             marginLeft: "5%",
             marginTop: "5%"
           }}>
-  
+
             <View>
               <Text>{UserData?.name}</Text>
             </View>
-  
+
             <View>
               <Text>{UserData?.total_karma} Karma points</Text>
             </View>
-  
+
             {/* <View>
               <Text>Description : {UserData.subreddit.public_description}</Text>
             </View> */}
+            <Button
+              title="logout"
+              onPress={() => logout()}
+            />
           </View>
-  
-  
+
           <View style={{
             marginLeft: "59%",
             position: 'absolute'
@@ -94,14 +118,12 @@ function UserProfile() {
             />
           </View>
         </View>
-  
-  
-        {/* <ScrollView >
-          {UserActivity.length > 0 &&
+
+        <ScrollView >
+          {UserActivity?.length > 0 &&
           <CommentsManager comments={UserActivity} />}
-        </ScrollView> */}
-  
-  
+        </ScrollView>
+
       </View>
     )
   } else {
@@ -112,20 +134,19 @@ function UserProfile() {
     )
   }
 
-  }
+}
 
 function UserPosts(props) {
 
   // console.log('props', props);
   // console.log('props.comments[0].data.body', props.comments[0].data.body);
 
-
   const commentsList = props.comments.map((item) => <Text>{item.data.body} {"\n"} </Text>)
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text>
-      {/* {props.comments[0].data.body} */}
-      {commentsList}
+        {/* {props.comments[0].data.body} */}
+        {commentsList}
       </Text>
       {/* <FlatList
         data={[props?.comments]}

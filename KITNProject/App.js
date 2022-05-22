@@ -45,7 +45,7 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: "XFWAmnjJ12hDFqZc2w8eXg",
+      clientId: "FQylgxv0CtwJL5pkzGwZ5A",
       scopes: ['*'],
       // redirectUri: "exp://10.41.160.161:19000"
       redirectUri: "exp://192.168.1.61:19000"
@@ -54,14 +54,16 @@ export default function App() {
   );
 
   React.useEffect(() => {
+    console.log('checking if user is logged in');
     async function retrieveToken() {
       const retrievedToken = await AsyncStorage.getItem('@access_token');
-      return retrievedToken;
+      console.log('retrieved token:', retrievedToken);
+      setAccessToken(retrievedToken);
     };
-    if (retrieveToken()) {
+    if (retrieveToken() !== null) {
       setIsLoggedIn(true)
     }
-  });
+  }, []);
 
   React.useEffect(() => {
     async function getToken(code) {
@@ -72,7 +74,7 @@ export default function App() {
         data: qs.stringify({
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: 'exp://192.168.1.61:19000'
+          redirect_uri: "exp://192.168.1.61:19000"
         }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -84,7 +86,6 @@ export default function App() {
         setIsLoggedIn(true);
       }
     };
-
     if (response?.type === 'success') {
       const code = response.params.code;
       getToken(code);
