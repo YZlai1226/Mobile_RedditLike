@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
 function EachPost(props) {
 
 
