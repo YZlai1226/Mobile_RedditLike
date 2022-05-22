@@ -8,6 +8,7 @@ import PostsManager from '../components/PostsManager';
 function SubredditScreen({ route, navigation}) {
   const { subRedditName } = route.params;
   const [subPosts, setSubPosts] = useState([]);
+  const [subTitle, setSubTitle] = useState([]);
 
 
 
@@ -16,6 +17,10 @@ function SubredditScreen({ route, navigation}) {
       .then((response) => {
         setSubPosts(response.data.data.children)
       })
+    // axios.get('https://www.reddit.com/'+ subRedditName + '/about.json')
+    // .then((response) => {
+    //   console.log('****************', response)
+    // })
   }, []);
   return (
     <ScrollView>

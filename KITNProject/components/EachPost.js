@@ -27,13 +27,11 @@ const styles = StyleSheet.create({
 
 
 function EachPost(props) {
-  // console.log('============ DATA CHILDREN PLEASE PLEASE PLEASE')
-  console.log('============ DATA CHILDREN IS', props.data.url_overridden_by_dest)
 
 
   return (
     <Layout style={styles.container} level='1'>
-      {console.log('data is')}
+      {/* {console.log('data is')} */}
       <Card style={styles.card} >
         <Text
           category='h7'
