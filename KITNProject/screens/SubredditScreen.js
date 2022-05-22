@@ -1,28 +1,70 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, View, ScrollView } from 'react-native';
+import { Button, View, ScrollView, Text, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import PostsManager from '../components/PostsManager';
+import datetime from 'react-datetime';
 
-function SubredditScreen({ route, navigation}) {
+function SubredditScreen({ route, navigation }) {
   const { subRedditName } = route.params;
   const [subPosts, setSubPosts] = useState([]);
+  const [subTitle, setSubTitle] = useState([]);
+  const [subDes, setSubDes] = useState();
+  const [subImage, setSubImage] = useState();
+  const [unixDate, setUnixDate] = useState()
+  const [finalDate, setFinalDate] = useState()
 
   useEffect(() => {
-    axios.get('https://www.reddit.com/'+ subRedditName + '/.json')
+    axios.get('https://www.reddit.com/' + subRedditName + '/.json')
       .then((response) => {
         setSubPosts(response.data.data.children)
       })
+    axios.get('https://www.reddit.com/' + subRedditName + '/about.json')
+      .then((response) => {
+        setSubTitle(response.data.data?.title)
+        setSubDes(response.data.data?.public_description)
+        setSubImage(response.data.data.banner_img)
+        setUnixDate(response.data.data.created_utc)
+      })
   }, []);
+
+  useEffect(() => {
+    const date = new Date(unixDate * 1000);
+    const realDate = date.toLocaleDateString("en-US");
+    setFinalDate(realDate)
+  }, [unixDate]);
+
   return (
     <ScrollView>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {/* <Text>I am the Subreddit Page !!</Text> */}
-        { subPosts.length>0 &&
-        <PostsManager navigation={navigation} posts={subPosts} />
+        <View style={styles.banner}>
+          <Text style={styles.title}>{subTitle}</Text>
+          <Text style={styles.date}>created on {finalDate}</Text>
+          <Text>{subDes}</Text>
+        </View>
+        {subPosts.length > 0 &&
+          <PostsManager navigation={navigation} posts={subPosts} />
         }
       </View>
     </ScrollView>
   );
 }
 export default SubredditScreen;
+
+const styles = StyleSheet.create({
+  banner: {
+    // backgroundColor: 'blue',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: '18px'
+  },
+  date: {
+    color: 'gray',
+    fontStyle: 'italic',
+    fontSize: '10px'
+  }
+});
