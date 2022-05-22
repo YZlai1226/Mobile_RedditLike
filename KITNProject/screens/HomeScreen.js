@@ -45,6 +45,7 @@ function HomeScreen({ navigation }) {
   useEffect(() => { getPosts() }, [filter]);
 
   async function getPosts() {
+    console.log('I am in home screen!!')
     const res = await axios.get(`https://oauth.reddit.com/${filter}/.json?count=20`, { headers: { Authorization: 'Bearer ' + token } });
     setPosts(res.data.data.children);
   }
