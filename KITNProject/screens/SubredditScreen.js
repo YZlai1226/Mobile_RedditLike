@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import {NavigationContainer} from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { Button, View, ScrollView } from 'react-native';
 import axios from 'axios';
@@ -9,8 +8,6 @@ function SubredditScreen({ route, navigation}) {
   const { subRedditName } = route.params;
   const [subPosts, setSubPosts] = useState([]);
   const [subTitle, setSubTitle] = useState([]);
-
-
 
   useEffect(() => {
     axios.get('https://www.reddit.com/'+ subRedditName + '/.json')
