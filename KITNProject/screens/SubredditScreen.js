@@ -11,8 +11,14 @@ function SubredditScreen({ route, navigation }) {
   const [subTitle, setSubTitle] = useState([]);
   const [subDes, setSubDes] = useState();
   const [subImage, setSubImage] = useState();
-  const [unixDate, setUnixDate] = useState()
-  const [finalDate, setFinalDate] = useState()
+  const [unixDate, setUnixDate] = useState();
+  const [finalDate, setFinalDate] = useState();
+  const [filter, setFilter] = useState('');
+  
+  async function getFilteredPosts() {
+    const res = await axios.get(`https://www.reddit.com/${subRedditName}/${filter}.json`);
+    setSubPosts(res.data.data.children);
+  }
 
   useEffect(() => {
     axios.get('https://www.reddit.com/' + subRedditName + '/.json')
@@ -34,6 +40,10 @@ function SubredditScreen({ route, navigation }) {
     setFinalDate(realDate)
   }, [unixDate]);
 
+  useEffect(() => {
+    getFilteredPosts()
+  }, [filter])
+
   return (
     <ScrollView>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -41,6 +51,9 @@ function SubredditScreen({ route, navigation }) {
           <Text style={styles.title}>{subTitle}</Text>
           <Text style={styles.date}>created on {finalDate}</Text>
           <Text>{subDes}</Text>
+        </View>
+        <View>
+          
         </View>
         {subPosts.length > 0 &&
           <PostsManager navigation={navigation} posts={subPosts} />

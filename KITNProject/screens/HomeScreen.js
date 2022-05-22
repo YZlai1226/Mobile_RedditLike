@@ -45,8 +45,14 @@ function HomeScreen({ navigation }) {
   useEffect(() => { getPosts() }, [filter]);
 
   async function getPosts() {
-    console.log('I am in home screen!!')
-    const res = await axios.get(`https://oauth.reddit.com/${filter}/.json?count=20`, { headers: { Authorization: 'Bearer ' + token } });
+    const url = `https://oauth.reddit.com/${filter}/.json`;
+    console.log('url:', url);
+    // const res = await axios.get(url, { headers: { Authorization: 'Bearer ' + token } });
+    const res = await axios.get(`https://www.reddit.com/${filter}/.json?count=20`, {
+      headers: {
+        Authorization: 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo='
+      }
+    });
     setPosts(res.data.data.children);
   }
 
@@ -58,7 +64,6 @@ function HomeScreen({ navigation }) {
     const url = `https://www.reddit.com/search/.json?q=${query}`
     const response = await axios.get(url);
     setPosts(response.data.data.children);
-    setFilter(query)
   }
 
   return (
