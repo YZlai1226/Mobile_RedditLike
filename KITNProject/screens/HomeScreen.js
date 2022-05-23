@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-import { Image, ScrollView, StyleSheet, Button, Text } from 'react-native';
+import { Image, ScrollView, StyleSheet, Button, Text, View } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -67,57 +67,77 @@ function HomeScreen({ navigation }) {
   }
 
   return (
+
     <ScrollView
-        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-    <Layout style={styles.container}>
+      contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Layout style={styles.container}>
+    <View style={{flex:1, flexDirection:'row', width: '100%', padding:10}}>
+        <Input
+          placeholder='Search'
+          value={query}
+          onChangeText={nextQuery => setQuery(nextQuery)}
+          style={{ width:'85%'}}
+        />
+
+        <Button
+          onPress={() => search()}
+          title="Go"
+
+        />
+        </View>
+        {/* <ButtonGroup>
+        </ButtonGroup> */}
         <Text></Text>
         <ButtonGroup>
           <Button
             onPress={() => setFilter('new')}
             title="New"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
           />
 
           <Button
             onPress={() => setFilter('best')}
             title="Best"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
           />
 
           <Button
             onPress={() => setFilter('top')}
             title="Top"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
           />
 
           <Button
             onPress={() => setFilter('controversial')}
             title="Controversial"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
           />
 
           <Button
             onPress={() => setFilter('rising')}
             title="Rising"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
           />
         </ButtonGroup>
 
-        <ButtonGroup>
-          <Input
-            placeholder='Search'
-            value={query}
-            onChangeText={nextQuery => setQuery(nextQuery)}
-          />
 
-          <Button
-            onPress={() => search()}
-            title="Go"
-          />
-        </ButtonGroup>
-
-        <Text>Posts ordered by: {filter}</Text>
+        <Text style={styles.filters}>Posts ordered by: {filter}</Text>
         <Text></Text>
         {posts.length > 0 &&
           <PostsManager navigation={navigation} posts={posts} />
         }
-    </Layout>
-      </ScrollView>
+      </Layout>
+    </ScrollView>
   );
 }
 
@@ -141,6 +161,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#3366FF',
   },
+
+  filters: {
+    color: '#EDF1F7',
+  }
 });
 
 export default HomeScreen;

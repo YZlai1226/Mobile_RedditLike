@@ -140,10 +140,11 @@ export default function App() {
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         <NavigationContainer>
           <Stack.Navigator
+          {...eva} theme={{ ...eva.dark, ...theme }}
             accessToken={accessToken}
             screenOptions={{
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: '#1F1F1F',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
