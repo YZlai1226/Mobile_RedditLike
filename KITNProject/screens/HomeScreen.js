@@ -74,7 +74,7 @@ function HomeScreen({ navigation }) {
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <Layout style={styles.container}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <View style={{ flex: 1, flexDirection: 'row', width: '100%', paddingTop: 10 }}>
+          <View style={{ flex: 1, flexDirection: 'row', width: '100%', paddingTop: 10, paddingLeft: 10 }}>
             <Input
               placeholder='Search'
               value={query}
