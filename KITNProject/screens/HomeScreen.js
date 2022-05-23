@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
 
   filters: {
-    color: '#EDF1F7',
+    color: '#EDF1F7'
   }
 });
 
