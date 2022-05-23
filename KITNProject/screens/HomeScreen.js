@@ -33,7 +33,7 @@ function HomeScreen({ navigation }) {
       <Text
         onPress={() => navigation.navigate('ProfileScreen')}
         title="Profile"
-        style={{color:"#fff", fontSize:15}}
+        style={{ color: "#fff", fontSize: 15 }}
       >
         Profile
       </Text>
@@ -73,71 +73,72 @@ function HomeScreen({ navigation }) {
     <ScrollView
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <Layout style={styles.container}>
-        <View style={{ flex: 1, flexDirection: 'row', width: '100%', padding: 10 }}>
-          <Input
-            placeholder='Search'
-            value={query}
-            onChangeText={nextQuery => setQuery(nextQuery)}
-            style={{ width: '85%' }}
-          />
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={{ flex: 1, flexDirection: 'row', width: '100%', paddingTop: 10 }}>
+            <Input
+              placeholder='Search'
+              value={query}
+              onChangeText={nextQuery => setQuery(nextQuery)}
+              style={{ width: '85%' }}
+            />
 
-          <Button
-            onPress={() => search()}
-            title="Go"
+            <Button
+              onPress={() => search()}
+              title="Go"
 
-          />
-        </View>
-        {/* <ButtonGroup>
+            />
+          </View>
+          {/* <ButtonGroup>
         </ButtonGroup> */}
-        <Text></Text>
-        <ButtonGroup>
-          <Button
-            onPress={() => setFilter('new')}
-            title="New"
-            appearance='ghost'
-            status='basic'
-          // style={styles.filters}
-          />
+          <Text></Text>
+          <ButtonGroup>
+            <Button
+              onPress={() => setFilter('new')}
+              title="New"
+              appearance='ghost'
+              status='basic'
+            // style={styles.filters}
+            />
 
-          <Button
-            onPress={() => setFilter('best')}
-            title="Best"
-            appearance='ghost'
-            status='basic'
-          // style={styles.filters}
-          />
+            <Button
+              onPress={() => setFilter('best')}
+              title="Best"
+              appearance='ghost'
+              status='basic'
+            // style={styles.filters}
+            />
 
-          <Button
-            onPress={() => setFilter('top')}
-            title="Top"
-            appearance='ghost'
-            status='basic'
-          // style={styles.filters}
-          />
+            <Button
+              onPress={() => setFilter('top')}
+              title="Top"
+              appearance='ghost'
+              status='basic'
+            // style={styles.filters}
+            />
 
-          <Button
-            onPress={() => setFilter('controversial')}
-            title="Controversial"
-            appearance='ghost'
-            status='basic'
-          // style={styles.filters}
-          />
+            <Button
+              onPress={() => setFilter('controversial')}
+              title="Controversial"
+              appearance='ghost'
+              status='basic'
+            // style={styles.filters}
+            />
 
-          <Button
-            onPress={() => setFilter('rising')}
-            title="Rising"
-            appearance='ghost'
-            status='basic'
-          // style={styles.filters}
-          />
-        </ButtonGroup>
+            <Button
+              onPress={() => setFilter('rising')}
+              title="Rising"
+              appearance='ghost'
+              status='basic'
+            // style={styles.filters}
+            />
+          </ButtonGroup>
 
-
-        <Text style={styles.filters}>Posts ordered by: {filter}</Text>
-        <Text></Text>
-        {posts.length > 0 &&
-          <PostsManager navigation={navigation} posts={posts} />
-        }
+          <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+          <Text></Text>
+          {posts.length > 0 &&
+            <PostsManager navigation={navigation} posts={posts} />
+          }
+        </View>
       </Layout>
     </ScrollView>
   );
