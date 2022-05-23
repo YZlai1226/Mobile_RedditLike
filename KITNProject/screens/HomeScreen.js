@@ -30,11 +30,13 @@ function HomeScreen({ navigation }) {
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
     headerRight: () => (
-      <Button
+      <Text
         onPress={() => navigation.navigate('ProfileScreen')}
         title="Profile"
-        color="#fff"
-      />
+        style={{color:"#fff", fontSize:15}}
+      >
+        Profile
+      </Text>
     )
   })
 
@@ -71,19 +73,19 @@ function HomeScreen({ navigation }) {
     <ScrollView
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <Layout style={styles.container}>
-    <View style={{flex:1, flexDirection:'row', width: '100%', padding:10}}>
-        <Input
-          placeholder='Search'
-          value={query}
-          onChangeText={nextQuery => setQuery(nextQuery)}
-          style={{ width:'85%'}}
-        />
+        <View style={{ flex: 1, flexDirection: 'row', width: '100%', padding: 10 }}>
+          <Input
+            placeholder='Search'
+            value={query}
+            onChangeText={nextQuery => setQuery(nextQuery)}
+            style={{ width: '85%' }}
+          />
 
-        <Button
-          onPress={() => search()}
-          title="Go"
+          <Button
+            onPress={() => search()}
+            title="Go"
 
-        />
+          />
         </View>
         {/* <ButtonGroup>
         </ButtonGroup> */}

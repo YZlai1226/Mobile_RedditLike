@@ -44,7 +44,7 @@ function PostScreen({ route }) {
     <ScrollView>
       <Card>
         <View>
-          <Text style={{ color: 'lightgray', fontStyle: 'italic' }}>{post.subreddit_name_prefixed} ‧ posted by {post.author_fullname}</Text>
+          <Text style={{ color: 'lightgray', fontStyle: 'italic', color:'#94CBFF' }}>{post.subreddit_name_prefixed} ‧ posted by {post.author_fullname}</Text>
           <Text category='h6'>{post.title}</Text>
           <Text></Text>
           <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
