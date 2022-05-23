@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
 function EachPost(props) {
 
 
@@ -35,6 +33,7 @@ function EachPost(props) {
       <Card style={styles.card} >
         <Text
           category='h7'
+          style={{color:'#0095FF'}}
           onPress={() => {
             props.navigation.navigate('SubredditScreen',
               {
@@ -56,7 +55,7 @@ function EachPost(props) {
         </Text>
         <Text
                   category='h8'
-          style={{ fontStyle: 'italic' }}
+          style={{ fontStyle: 'italic', color: '#94CBFF' }}
         >
           Posted by {props.data.author_fullname}
         </Text>

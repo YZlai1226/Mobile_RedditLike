@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-import { Image, ScrollView, Button, Text } from 'react-native';
+import { Image, ScrollView, StyleSheet, Button, Text, View } from 'react-native';
 import Logo from './../assets/LogoWhite.png';
 import PostsManager from './../components/PostsManager.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,11 +30,13 @@ function HomeScreen({ navigation }) {
   navigation.setOptions({
     headerLeft: (props) => <LogoTitle {...props} />,
     headerRight: () => (
-      <Button
+      <Text
         onPress={() => navigation.navigate('ProfileScreen')}
         title="Profile"
-        color="#fff"
-      />
+        style={{color:"#fff", fontSize:15}}
+      >
+        Profile
+      </Text>
     )
   })
 
@@ -45,8 +47,14 @@ function HomeScreen({ navigation }) {
   useEffect(() => { getPosts() }, [filter]);
 
   async function getPosts() {
-    console.log('I am in home screen!!')
-    const res = await axios.get(`https://oauth.reddit.com/${filter}/.json?count=20`, { headers: { Authorization: 'Bearer ' + token } });
+    const url = `https://oauth.reddit.com/${filter}/.json`;
+    console.log('url:', url);
+    // const res = await axios.get(url, { headers: { Authorization: 'Bearer ' + token } });
+    const res = await axios.get(`https://www.reddit.com/${filter}/.json?count=20`, {
+      headers: {
+        Authorization: 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo='
+      }
+    });
     setPosts(res.data.data.children);
   }
 
@@ -58,59 +66,107 @@ function HomeScreen({ navigation }) {
     const url = `https://www.reddit.com/search/.json?q=${query}`
     const response = await axios.get(url);
     setPosts(response.data.data.children);
-    setFilter(query)
   }
 
   return (
+
     <ScrollView
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text></Text>
-      <ButtonGroup>
-        <Button
-          onPress={() => setFilter('new')}
-          title="New"
-        />
+      <Layout style={styles.container}>
+        <View style={{ flex: 1, flexDirection: 'row', width: '100%', padding: 10 }}>
+          <Input
+            placeholder='Search'
+            value={query}
+            onChangeText={nextQuery => setQuery(nextQuery)}
+            style={{ width: '85%' }}
+          />
 
-        <Button
-          onPress={() => setFilter('best')}
-          title="Best"
-        />
+          <Button
+            onPress={() => search()}
+            title="Go"
 
-        <Button
-          onPress={() => setFilter('top')}
-          title="Top"
-        />
+          />
+        </View>
+        {/* <ButtonGroup>
+        </ButtonGroup> */}
+        <Text></Text>
+        <ButtonGroup>
+          <Button
+            onPress={() => setFilter('new')}
+            title="New"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
+          />
 
-        <Button
-          onPress={() => setFilter('controversial')}
-          title="Controversial"
-        />
+          <Button
+            onPress={() => setFilter('best')}
+            title="Best"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
+          />
 
-        <Button
-          onPress={() => setFilter('rising')}
-          title="Rising"
-        />
-      </ButtonGroup>
+          <Button
+            onPress={() => setFilter('top')}
+            title="Top"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
+          />
 
-      <ButtonGroup>
-        <Input
-          placeholder='Search'
-          value={query}
-          onChangeText={nextQuery => setQuery(nextQuery)}
-        />
+          <Button
+            onPress={() => setFilter('controversial')}
+            title="Controversial"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
+          />
 
-        <Button
-          onPress={() => search()}
-          title="Go"
-        />
-      </ButtonGroup>
+          <Button
+            onPress={() => setFilter('rising')}
+            title="Rising"
+            appearance='ghost'
+            status='basic'
+          // style={styles.filters}
+          />
+        </ButtonGroup>
 
-      <Text>Posts ordered by: {filter}</Text>
-      <Text></Text>
-      {posts.length > 0 &&
-        <PostsManager navigation={navigation} posts={posts} />
-      }
+
+        <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+        <Text></Text>
+        {posts.length > 0 &&
+          <PostsManager navigation={navigation} posts={posts} />
+        }
+      </Layout>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  card: {
+    marginTop: 5,
+    marginBottom: 5,
+    width: '100%',
+    height: 'auto',
+    padding: 0,
+  },
+
+  controlContainer: {
+    borderRadius: 4,
+    margin: 2,
+    // padding: 6,
+    justifyContent: 'center',
+    backgroundColor: '#3366FF',
+  },
+
+  filters: {
+    color: '#EDF1F7',
+  }
+});
+
 export default HomeScreen;

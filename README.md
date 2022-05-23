@@ -1,4 +1,4 @@
-# epicture
+# Redditech
 
 Mobile application to log in Reddit account to read the posts and modify user's profile page.
 The application is created by Expo and code with React Native. 
