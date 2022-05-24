@@ -10,15 +10,19 @@ function UserProfile() {
   const [UserActivity, setUserActivity] = React.useState([]);
 
   async function retrieveToken() {
-    const retrievedToken = await AsyncStorage.getItem('@access_token');
-    setToken(retrievedToken);
-    const res = await axios.get("https://oauth.reddit.com/api/v1/me.json", {
-      headers: {
-        'User-Agent': 'android:kitnforreddit:0.3',
-        Authorization: 'Bearer ' + retrievedToken
+    try {
+      const retrievedToken = await AsyncStorage.getItem('@access_token');
+      setToken(retrievedToken);
+      const res = await axios.get("https://oauth.reddit.com/api/v1/me.json", {
+        headers: {
+          'User-Agent': 'android:kitnforreddit:0.3',
+          Authorization: 'Bearer ' + retrievedToken
         }
-    })
-    setUserData(res.data)
+      })
+      setUserData(res.data)
+    } catch {
+      console.log('error');
+    }
   }
   async function GetUserData() {
     try {
@@ -26,7 +30,8 @@ function UserProfile() {
       const res = await axios.get("https://oauth.reddit.com/api/v1/me", {
         headers: {
           Authorization: 'Bearer ' + token,
-          'User-Agent': 'android:kitnforreddit:0.3'}
+          'User-Agent': 'android:kitnforreddit:0.3'
+        }
       })
       console.log('res.data:', res.data);
       setUserData(res.data)
@@ -51,6 +56,7 @@ function UserProfile() {
   async function logout() {
     try {
       await AsyncStorage.removeItem('@access_storage');
+      await AsyncStorage.setItem('@is_logged', 'false')
       return true;
     } catch (exception) {
       console.log(exception);
@@ -121,7 +127,7 @@ function UserProfile() {
 
         <ScrollView >
           {UserActivity?.length > 0 &&
-          <CommentsManager comments={UserActivity} />}
+            <CommentsManager comments={UserActivity} />}
         </ScrollView>
 
       </View>

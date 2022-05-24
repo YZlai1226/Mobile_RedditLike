@@ -48,7 +48,7 @@ export default function App() {
       clientId: "FQylgxv0CtwJL5pkzGwZ5A",
       scopes: ['*'],
       // redirectUri: "exp://10.41.160.161:19000"
-      redirectUri: "exp://192.168.1.61:19000"
+      redirectUri: "exp://192.168.1.48:19000"
     },
     discovery
   );
@@ -64,6 +64,11 @@ export default function App() {
       setIsLoggedIn(true)
     }
   }, []);
+  async function LoginCheck() {
+    res = await AsyncStorage.getItem('@is_logged');
+    console.log('Login status:', res);
+    return res; 
+  }
 
   React.useEffect(() => {
     async function getToken(code) {
@@ -83,6 +88,7 @@ export default function App() {
       });
       if (res.data.access_token) {
         await AsyncStorage.setItem('@access_token', res.data.access_token);
+        await AsyncStorage.setItem('@is_logged', 'true')
         setIsLoggedIn(true);
       }
     };
@@ -92,76 +98,76 @@ export default function App() {
     }
   }, [response]);
 
-  if (isLoggedIn === false) {
+  if (LoginCheck() === 'true') {
     return (
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-        <Layout
-          style={{
-            flex: 1,
-            flexDirection: 'column-reverse',
-            rowGap: 20,
-            padding: 30,
-            alignItems: 'flex-end',
+      <NavigationContainer>
+        <Stack.Navigator
+        {...eva} theme={{ ...eva.dark, ...theme }}
+          accessToken={accessToken}
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#1F1F1F',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerBackTitleStyle: (props) => <LogoTitle {...props} />,
           }}>
-
-          <Button>
-            Register
-          </Button>
-
-          <Button
-            disabled={!request}
-            onPress={() => {
-              promptAsync();
-            }}
-          >
-            Login
-          </Button>
-
-          <Text>
-            The reddit client that will make you purr.
-          </Text>
-
-          <Text style={{
-            textAlign: 'right',
-
-            fontSize: 50,
-          }}>
-            Welcome to KITN.
-          </Text>
-
-          <View>
-
-          </View>
-        </Layout>
-      </ApplicationProvider>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+          />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
+          <Stack.Screen name="PostScreen" component={PostScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ApplicationProvider>
     );
   } else {
     return (
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-        <NavigationContainer>
-          <Stack.Navigator
-          {...eva} theme={{ ...eva.dark, ...theme }}
-            accessToken={accessToken}
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: '#1F1F1F',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              headerBackTitleStyle: (props) => <LogoTitle {...props} />,
-            }}>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-            />
-            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
-            <Stack.Screen name="PostScreen" component={PostScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ApplicationProvider>
+      <Layout
+        style={{
+          flex: 1,
+          flexDirection: 'column-reverse',
+          rowGap: 20,
+          padding: 30,
+          alignItems: 'flex-end',
+        }}>
+
+        <Button>
+          Register
+        </Button>
+
+        <Button
+          disabled={!request}
+          onPress={() => {
+            promptAsync();
+          }}
+        >
+          Login
+        </Button>
+
+        <Text>
+          The reddit client that will make you purr.
+        </Text>
+
+        <Text style={{
+          textAlign: 'right',
+
+          fontSize: 50,
+        }}>
+          Welcome to KITN.
+        </Text>
+
+        <View>
+
+        </View>
+      </Layout>
+    </ApplicationProvider>
     )
   }
 }
