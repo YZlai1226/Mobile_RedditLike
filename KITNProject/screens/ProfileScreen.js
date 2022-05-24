@@ -57,10 +57,8 @@ function UserProfile() {
     try {
       await AsyncStorage.removeItem('@access_storage');
       await AsyncStorage.setItem('@is_logged', 'false')
-      return true;
     } catch (exception) {
       console.log(exception);
-      return false;
     }
   }
 

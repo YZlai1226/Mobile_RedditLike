@@ -55,20 +55,17 @@ export default function App() {
 
   React.useEffect(() => {
     console.log('checking if user is logged in');
-    async function retrieveToken() {
-      const retrievedToken = await AsyncStorage.getItem('@access_token');
-      console.log('retrieved token:', retrievedToken);
-      setAccessToken(retrievedToken);
+    async function retrieveStatus() {
+      const res = await AsyncStorage.getItem('@is_logged');
+      if (res == 'true') {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
     };
-    if (retrieveToken() !== null) {
-      setIsLoggedIn(true)
-    }
+    retrieveStatus();
+    console.log(isLoggedIn);
   }, []);
-  async function LoginCheck() {
-    res = await AsyncStorage.getItem('@is_logged');
-    console.log('Login status:', res);
-    return res; 
-  }
 
   React.useEffect(() => {
     async function getToken(code) {
@@ -98,7 +95,7 @@ export default function App() {
     }
   }, [response]);
 
-  if (LoginCheck() === 'true') {
+  if (isLoggedIn == true) {
     return (
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
       <NavigationContainer>
