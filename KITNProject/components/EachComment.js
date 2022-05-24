@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     border: 'none',
-    borderBottom: "3px"
+    borderBottom: 3
   },
   author: {
     fontStyle: 'italic',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   date: {
     fontStyle: 'italic',
     color: 'lightgray',
-    fontSize: '11px',
+    fontSize: 11,
     marginBottom: 10
   }
 });
