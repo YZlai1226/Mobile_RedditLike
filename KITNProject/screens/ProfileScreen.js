@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CommentsManager from '../components/CommentsManager';
+import ActivityManager from '../components/ActivityManager';
 
 function UserProfile() {
   const [token, setToken] = React.useState('');
@@ -46,8 +46,12 @@ function UserProfile() {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         setUserActivity(res.data.data.children)
+
+        console.log("Post Author!!!!", res.data.data.children[0].data.link_author);
+// 
+        console.log("Post TITLE!!!", res.data.data.children[0].data.link_title);
         // console.log("++++++++++++++++++++++++++++++++++++++++++", UserActivity.data.data.children);
-        console.log("////////////////////////", UserActivity);
+        // console.log("////////////////////////", UserActivity);
       } catch {
         console.log('User activity fetching failed');
       }
@@ -66,7 +70,7 @@ function UserProfile() {
 
   // React.useEffect(() => { GetUserData() }, [token]);
 
-  // React.useEffect(() => { GetUserActivity() }, [UserData]);
+  React.useEffect(() => { GetUserActivity() }, [UserData]);
 
   if (UserData) {
     return (
@@ -91,7 +95,7 @@ function UserProfile() {
 
           <View style={{
             marginLeft: "5%",
-            marginTop: "5%"
+            marginTop: "2%"
           }}>
 
             <View>
@@ -105,27 +109,25 @@ function UserProfile() {
             {/* <View>
               <Text>Description : {UserData.subreddit.public_description}</Text>
             </View> */}
-            <Button
-              title="logout"
-              onPress={() => logout()}
-            />
+    
           </View>
 
           <View style={{
             marginLeft: "59%",
+            marginTop: "2%",
             position: 'absolute'
           }}>
-            <Button
+            <Button 
               color="orange"
-              title="Edit"
-              onPress={() => console.log("button pressed")}
+              title="logout"
+              onPress={() => logout()}
             />
           </View>
         </View>
 
         <ScrollView >
           {UserActivity?.length > 0 &&
-            <CommentsManager comments={UserActivity} />}
+            <ActivityManager comments={UserActivity} />}
         </ScrollView>
 
       </View>

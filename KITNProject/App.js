@@ -45,10 +45,10 @@ export default function App() {
   const [accessToken, setAccessToken] = React.useState("");
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: "FQylgxv0CtwJL5pkzGwZ5A",
+      clientId: "dsLdGDrhhA9LOjaNVngHsA",
       scopes: ['*'],
       // redirectUri: "exp://10.41.160.161:19000"
-      redirectUri: "exp://192.168.1.48:19000"
+      redirectUri: "exp://192.168.1.41:19000"
     },
     discovery
   );
@@ -76,11 +76,12 @@ export default function App() {
         data: qs.stringify({
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: "exp://192.168.1.61:19000"
+          redirect_uri: "exp://192.168.1.41:19000"
         }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo='
+          // 'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo=' CODE DE NICOLAS
+          'Authorization': 'Basic ZHNMZEdEcmhoQTlMT2phTlZuZ0hzQTo='
         },
       });
       if (res.data.access_token) {
