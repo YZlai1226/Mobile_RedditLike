@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, View } from 'react-native';
+import { Image, StyleSheet, Button, View, ScrollView, LogBox } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Text } from '@ui-kitten/components';
@@ -28,6 +28,10 @@ function HomeScreen(props) {
   const [filter, setFilter] = useState('best');
   const [posts, setPosts] = useState([]);
   const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
 
   useEffect(() => {
     retrieveToken();
@@ -77,17 +81,19 @@ function HomeScreen(props) {
 
   return (
 
-    <Layout style={styles.layout}>
-      {/* <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}> */}
-      <SearchBar setQuery={setQuery} query={query} search={search} />
-      {/* </View> */}
-      <Filters setFilter={setFilter} />
-      <Text style={styles.filters}>Posts ordered by: {filter}</Text>
-      <Text></Text>
-      {posts.length > 0 &&
-        <PostsManager posts={posts} token={token} />
-      }
-    </Layout >
+    <ScrollView>
+      <Layout style={styles.layout}>
+        {/* <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}> */}
+        <SearchBar setQuery={setQuery} query={query} search={search} />
+        {/* </View> */}
+        <Filters setFilter={setFilter} />
+        <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+        <Text></Text>
+        {posts.length > 0 &&
+          <PostsManager posts={posts} token={token} />
+        }
+      </Layout >
+    </ScrollView>
   );
 }
 

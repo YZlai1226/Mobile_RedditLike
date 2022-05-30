@@ -1,5 +1,6 @@
 import { FlatList } from 'react-native-gesture-handler';
 import EachPost from './EachPost.js';
+import { View } from 'react-native';
 
 function PostsManager(props) {
 
