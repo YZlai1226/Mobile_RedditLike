@@ -9,7 +9,7 @@ import PostsManager from '../components/posts/PostsManager.js';
 
 // STYLE
 import Logo from './../assets/LogoWhite.png';
-import { Layout, ButtonGroup } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import SearchBar from '../components/SearchBar.js';
 import Filters from '../components/Filters.js';
 

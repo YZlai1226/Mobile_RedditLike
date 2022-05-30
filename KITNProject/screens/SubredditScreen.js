@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Button, View, ScrollView, Text, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import PostsManager from '../components/posts/PostsManager';
-import { ButtonGroup, Layout } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
+import Filters from '../components/Filters';
 
 
 function SubredditScreen({ route, navigation }) {
@@ -55,35 +56,7 @@ function SubredditScreen({ route, navigation }) {
             <Text style={{ color: 'white' }}>{subDes}</Text>
           </View>
 
-          {/* Filters */}
-          <View>
-            <ButtonGroup>
-              <Button
-                onPress={() => setFilter('new')}
-                title="New"
-              />
-
-              <Button
-                onPress={() => setFilter('best')}
-                title="Best"
-              />
-
-              <Button
-                onPress={() => setFilter('top')}
-                title="Top"
-              />
-
-              <Button
-                onPress={() => setFilter('controversial')}
-                title="Controversial"
-              />
-
-              <Button
-                onPress={() => setFilter('rising')}
-                title="Rising"
-              />
-            </ButtonGroup>
-          </View>
+          <Filters setFilter={setFilter} />
 
           {subPosts.length > 0 &&
             <PostsManager navigation={navigation} posts={subPosts} />
