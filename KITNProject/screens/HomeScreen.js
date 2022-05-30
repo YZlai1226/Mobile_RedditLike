@@ -11,6 +11,7 @@ import PostsManager from '../components/posts/PostsManager.js';
 import Logo from './../assets/LogoWhite.png';
 import { Layout, ButtonGroup } from '@ui-kitten/components';
 import SearchBar from '../components/SearchBar.js';
+import Filters from '../components/Filters.js';
 
 function LogoTitle() {
   return (
@@ -75,64 +76,23 @@ function HomeScreen(props) {
 
   return (
 
-    // <View
-    // style={{  }}>
     <Layout style={styles.layout}>
       {/* <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}> */}
-        <SearchBar setQuery={setQuery} query={query} search={search} />
-        {/* </View> */}
-        <Text></Text>
-        <ButtonGroup>
-          <Button
-            onPress={() => setFilter('new')}
-            title="New"
-            appearance='ghost'
-            status='basic'
-          />
-
-          <Button
-            onPress={() => setFilter('best')}
-            title="Best"
-            appearance='ghost'
-            status='basic'
-          />
-
-          <Button
-            onPress={() => setFilter('top')}
-            title="Top"
-            appearance='ghost'
-            status='basic'
-          />
-
-          <Button
-            onPress={() => setFilter('controversial')}
-            title="Controversial"
-            appearance='ghost'
-            status='basic'
-          />
-
-          <Button
-            onPress={() => setFilter('rising')}
-            title="Rising"
-            appearance='ghost'
-            status='basic'
-          // style={styles.filters}
-          />
-        </ButtonGroup>
-
-        <Text style={styles.filters}>Posts ordered by: {filter}</Text>
-        <Text></Text>
-        {posts.length > 0 &&
-          <PostsManager posts={posts} token={token} />
-        }
+      <SearchBar setQuery={setQuery} query={query} search={search} />
       {/* </View> */}
+      <Filters setFilter={setFilter} />
+      <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+      <Text></Text>
+      {posts.length > 0 &&
+        <PostsManager posts={posts} token={token} />
+      }
     </Layout >
   );
 }
 
 const styles = StyleSheet.create({
   layout: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     flexWrap: 'wrap',
   },
   card: {
