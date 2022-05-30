@@ -1,21 +1,19 @@
-import React from 'react';
-import { Text, Container } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import EachPost from './EachPost.js';
 
 function PostsManager(props) {
 
-  const subreddits = props.posts.map((post) => {
-    <Text>{post.data.subreddit}</Text>
-  });
-
   return (
     <>
       {props.posts.length > 0 &&
-        props.posts.map((post) => {
-          return(
-          <EachPost key={post.id} navigation={props.navigation} {...post} ></EachPost>
-          )
-        })}
+        <FlatList
+          data={props.posts}
+          renderItem={({item}) => (
+            <EachPost key={item.data.id} post={item} token={props.token} >item is {item.data.id}</EachPost>
+          )}
+          keyExtractor={post => post.id}
+        />
+      }
     </>
   );
 }

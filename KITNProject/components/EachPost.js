@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Card, Text, Layout } from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,51 +26,53 @@ const styles = StyleSheet.create({
 });
 
 function EachPost(props) {
-
+  const navigation = useNavigation();
 
   return (
     <Layout style={styles.container} level='1'>
-      {/* {console.log('data is')} */}
       <Card style={styles.card} >
         <Text
           category='h7'
-          style={{color:'#0095FF'}}
+          style={{ color: '#0095FF' }}
           onPress={() => {
-            props.navigation.navigate('SubredditScreen',
+            navigation.navigate('Subreddit',
               {
-                subRedditName: props.data.subreddit_name_prefixed,
+                subRedditName: props.post.data.subreddit_name_prefixed,
               });
           }}
         >
-          {props.data.subreddit_name_prefixed}
+          {props.post.data?.subreddit_name_prefixed}
         </Text>
         <Text></Text>
 
         <Text
           category='h5'
-          onPress={() => props.navigation.navigate('PostScreen', {
-            postId: props.data.name
+          onPress={() => navigation.navigate('Post', {
+            postId: props.post.data.name
           })}
         >
-          {props.data.title}
+          {props.post.data?.title}
         </Text>
         <Text
-                  category='h8'
-          style={{ fontStyle: 'italic', color: '#94CBFF' }}
+          category='h8'
+
         >
-          Posted by {props.data.author_fullname}
+          Posted by {props.post.data?.author_fullname}
         </Text>
         <Text></Text>
 
-
-        {[".gif", ".jpg"].some(el => props.data.url_overridden_by_dest?.includes(el)) &&
+        {/* {[".gif", ".jpg"].some(el => props.post.data.url_overridden_by_dest?.includes(el)) && */}
+        {[".gif", ".jpg"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
           <TouchableOpacity onPress={() =>
-            props.navigation.navigate('PostScreen', {
-              postId: props.data.name
+            navigation.navigate('Post', {
+              postId: props.post.data.name
             })}>
             <Image
               style={{ width: 'auto', height: 200 }}
-              source={{ uri: props.data.url_overridden_by_dest }}
+              source={{
+                headers: { Authorization: `bearer ${props.token}` },
+                uri: props.post.data.preview?.images[0]?.source.url.replaceAll('amp;', '')
+              }}
             />
           </TouchableOpacity>
         }

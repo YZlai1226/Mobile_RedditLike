@@ -1,25 +1,22 @@
-import * as React from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { REDIRECT_URI, CLIENT_ID } from "@env";
-import axios from 'axios';
-import qs from 'qs';
+import { Image } from 'react-native';
+import Context from './context';
 
-// Components
+// SCREENS
 import HomeScreen from './screens/HomeScreen.js';
+import LoginScreen from './screens/LoginScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
 import PostScreen from './screens/PostScreen.js';
 import SubredditScreen from './screens/SubredditScreen.js';
 
-// Style
+// STYLE
 import Logo from './assets/LogoWhite.png';
 import * as eva from '@eva-design/eva';
 import { default as theme } from './theme.json';
-import { ApplicationProvider, Layout, Button, Text } from '@ui-kitten/components';
+import { ApplicationProvider } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,140 +29,56 @@ function LogoTitle() {
   )
 }
 
-WebBrowser.maybeCompleteAuthSession();
-
-//Endpoint
-const discovery = {
-  authorizationEndpoint: 'https://www.reddit.com/api/v1/authorize',
-  tokenEndpoint: 'https://www.reddit.com/api/v1/access_token',
-};
-
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [accessToken, setAccessToken] = React.useState("");
-  const [request, response, promptAsync] = useAuthRequest(
-    {
-      clientId: "dsLdGDrhhA9LOjaNVngHsA",
-      scopes: ['*'],
-      // redirectUri: "exp://10.41.160.161:19000"
-      redirectUri: "exp://192.168.1.41:19000"
-    },
-    discovery
-  );
 
-  React.useEffect(() => {
-    console.log('checking if user is logged in');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
+
+  useEffect(() => {
     async function retrieveStatus() {
-      const res = await AsyncStorage.getItem('@is_logged');
-      if (res == 'true') {
+      const res = await AsyncStorage.getItem('@access_token');
+      if (res) {
         setIsLoggedIn(true);
+        setAccessToken(res);
+        console.log('token is', res)
       } else {
         setIsLoggedIn(false);
       }
     };
     retrieveStatus();
-    console.log(isLoggedIn);
   }, []);
 
-  React.useEffect(() => {
-    async function getToken(code) {
-      const url = "https://www.reddit.com/api/v1/access_token";
-      const res = await axios({
-        method: 'post',
-        url: url,
-        data: qs.stringify({
-          grant_type: 'authorization_code',
-          code: code,
-          redirect_uri: "exp://192.168.1.41:19000"
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          // 'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo=' CODE DE NICOLAS
-          'Authorization': 'Basic ZHNMZEdEcmhoQTlMT2phTlZuZ0hzQTo='
-        },
-      });
-      if (res.data.access_token) {
-        await AsyncStorage.setItem('@access_token', res.data.access_token);
-        await AsyncStorage.setItem('@is_logged', 'true')
-        setIsLoggedIn(true);
-      }
-    };
-    if (response?.type === 'success') {
-      const code = response.params.code;
-      getToken(code);
-    }
-  }, [response]);
-
-  if (isLoggedIn == true) {
-    return (
-      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+  return (
+    <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
       <NavigationContainer>
-        <Stack.Navigator
-        {...eva} theme={{ ...eva.dark, ...theme }}
-          accessToken={accessToken}
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#1F1F1F',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            headerBackTitleStyle: (props) => <LogoTitle {...props} />,
-          }}>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-          />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-          <Stack.Screen name="SubredditScreen" component={SubredditScreen} />
-          <Stack.Screen name="PostScreen" component={PostScreen} />
-        </Stack.Navigator>
+        <Context.Provider value={{ setIsLoggedIn, accessToken, setAccessToken }}>
+          <Stack.Navigator
+            {...eva} theme={{ ...eva.dark, ...theme }}
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#1F1F1F',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+              headerBackTitleStyle: (props) => <LogoTitle {...props} />,
+            }}>
+            {isLoggedIn ? (
+              <>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Subreddit" component={SubredditScreen} />
+                <Stack.Screen name="Post" component={PostScreen} />
+              </>
+            ) : (
+              <>
+                <Stack.Screen name="Login" component={LoginScreen} />
+              </>
+            )}
+          </Stack.Navigator>
+        </Context.Provider>
       </NavigationContainer>
-    </ApplicationProvider>
-    );
-  } else {
-    return (
-      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-      <Layout
-        style={{
-          flex: 1,
-          flexDirection: 'column-reverse',
-          rowGap: 20,
-          padding: 30,
-          alignItems: 'flex-end',
-        }}>
-
-        <Button>
-          Register
-        </Button>
-
-        <Button
-          disabled={!request}
-          onPress={() => {
-            promptAsync();
-          }}
-        >
-          Login
-        </Button>
-
-        <Text>
-          The reddit client that will make you purr.
-        </Text>
-
-        <Text style={{
-          textAlign: 'right',
-
-          fontSize: 50,
-        }}>
-          Welcome to KITN.
-        </Text>
-
-        <View>
-
-        </View>
-      </Layout>
-    </ApplicationProvider>
-    )
-  }
+    </ApplicationProvider >
+  );
 }

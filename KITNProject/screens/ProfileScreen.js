@@ -1,13 +1,18 @@
-import * as React from 'react';
-import { Button, Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Button, Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ActivityManager from '../components/ActivityManager';
+import { useNavigation } from '@react-navigation/native';
+import Context from '../context';
 
 function UserProfile() {
-  const [token, setToken] = React.useState('');
-  const [UserData, setUserData] = React.useState([]);
-  const [UserActivity, setUserActivity] = React.useState([]);
+  const [token, setToken] = useState('');
+  const [UserData, setUserData] = useState([]);
+  const [UserActivity, setUserActivity] = useState([]);
+  const navigation = useNavigation();
+
+  const context = useContext(Context);  
 
   async function retrieveToken() {
     try {
@@ -26,14 +31,12 @@ function UserProfile() {
   }
   async function GetUserData() {
     try {
-      console.log('token:', token);
       const res = await axios.get("https://oauth.reddit.com/api/v1/me", {
         headers: {
           Authorization: 'Bearer ' + token,
           'User-Agent': 'android:kitnforreddit:0.3'
         }
       })
-      console.log('res.data:', res.data);
       setUserData(res.data)
     } catch {
       console.log('data fetching failed');
@@ -46,12 +49,6 @@ function UserProfile() {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         setUserActivity(res.data.data.children)
-
-        console.log("Post Author!!!!", res.data.data.children[0].data.link_author);
-// 
-        console.log("Post TITLE!!!", res.data.data.children[0].data.link_title);
-        // console.log("++++++++++++++++++++++++++++++++++++++++++", UserActivity.data.data.children);
-        // console.log("////////////////////////", UserActivity);
       } catch {
         console.log('User activity fetching failed');
       }
@@ -61,16 +58,18 @@ function UserProfile() {
     try {
       await AsyncStorage.removeItem('@access_storage');
       await AsyncStorage.setItem('@is_logged', 'false')
+      context.setIsLoggedIn(false);
+      context.setAccessToken('');
     } catch (exception) {
       console.log(exception);
     }
   }
 
-  React.useEffect(() => { retrieveToken() }, []);
+  useEffect(() => { retrieveToken() }, []);
 
   // React.useEffect(() => { GetUserData() }, [token]);
 
-  React.useEffect(() => { GetUserActivity() }, [UserData]);
+  useEffect(() => { GetUserActivity() }, [UserData]);
 
   if (UserData) {
     return (
@@ -83,7 +82,7 @@ function UserProfile() {
 
         }}>
 
-          <TouchableOpacity onPress={() => console.log("image pressed")}>
+          <TouchableOpacity >
             <Image
               source={{
                 width: 38,
@@ -109,7 +108,7 @@ function UserProfile() {
             {/* <View>
               <Text>Description : {UserData.subreddit.public_description}</Text>
             </View> */}
-    
+
           </View>
 
           <View style={{
@@ -117,10 +116,10 @@ function UserProfile() {
             marginTop: "2%",
             position: 'absolute'
           }}>
-            <Button 
+            <Button
               color="orange"
               title="logout"
-              onPress={() => logout()}
+              onPress={() => { logout(); navigation.navigate('Home') }}
             />
           </View>
         </View>
@@ -139,40 +138,6 @@ function UserProfile() {
       </View>
     )
   }
-
-}
-
-function UserPosts(props) {
-
-  // console.log('props', props);
-  // console.log('props.comments[0].data.body', props.comments[0].data.body);
-
-  const commentsList = props.comments.map((item) => <Text>{item.data.body} {"\n"} </Text>)
-  return (
-    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
-        {/* {props.comments[0].data.body} */}
-        {commentsList}
-      </Text>
-      {/* <FlatList
-        data={[props?.comments]}
-        renderItem={({ item }) => <Text>{item.data?.body}</Text>}
-      /> */}
-      <SafeAreaView style={{ backgroundColor: "lightblue" }}>
-        <Text>Hon hon hon, je suis ONE POST! </Text>
-      </SafeAreaView>
-
-      <SafeAreaView style={{ backgroundColor: "blue" }}>
-        <Text style={styles.white}>Hon hon hon, je suis ONE POST! </Text>
-      </SafeAreaView>
-
-      <SafeAreaView style={{ backgroundColor: "darkblue" }}>
-        <Text style={styles.red}>Hon hon hon, je suis ONE POST! </Text>
-      </SafeAreaView>
-
-    </View >
-
-  );
 }
 
 const styles = StyleSheet.create({

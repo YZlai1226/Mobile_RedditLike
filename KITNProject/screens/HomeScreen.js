@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-// import {NavigationContainer} from '@react-navigation/native';
-import { Image, ScrollView, StyleSheet, Button, Text, View } from 'react-native';
-import Logo from './../assets/LogoWhite.png';
-import PostsManager from './../components/PostsManager.js';
+import { Image, StyleSheet, Button, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+
+// COMPONENTS
+import PostsManager from './../components/PostsManager.js';
+
+// STYLE
+import Logo from './../assets/LogoWhite.png';
 import { Layout, ButtonGroup, Input } from '@ui-kitten/components';
 
 function LogoTitle() {
@@ -16,51 +19,51 @@ function LogoTitle() {
   )
 }
 
-function HomeScreen({ navigation }) {
+function HomeScreen(props) {
   const [token, setToken] = useState('');
   const [filter, setFilter] = useState('best');
   const [posts, setPosts] = useState([]);
+  const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    retrieveToken();
+    props.navigation.setOptions({
+      headerLeft: (props) => <LogoTitle {...props} />,
+      headerRight: () => (
+        <Text
+          onPress={() => props.navigation.navigate('Profile')}
+          title="Profile"
+          style={{ color: "#fff", fontSize: 15 }}
+        >
+          Profile
+        </Text>
+      )
+    })
+  }, []);
+
+  useEffect(() => {
+    if (token && filter) {
+      getPosts();
+    }
+  }, [token, filter]);
 
   async function retrieveToken() {
     const retrievedToken = await AsyncStorage.getItem('@access_token');
-    console.log('access token:', retrievedToken);
     setToken(retrievedToken);
   }
 
-  navigation.setOptions({
-    headerLeft: (props) => <LogoTitle {...props} />,
-    headerRight: () => (
-      <Text
-        onPress={() => navigation.navigate('ProfileScreen')}
-        title="Profile"
-        style={{ color: "#fff", fontSize: 15 }}
-      >
-        Profile
-      </Text>
-    )
-  })
-
-  useEffect(() => { retrieveToken() }, []);
-
-  useEffect(() => { getPosts() }, [token]);
-
-  useEffect(() => { getPosts() }, [filter]);
-
   async function getPosts() {
-    const url = `https://oauth.reddit.com/${filter}/.json`;
-    console.log('url:', url);
-    // const res = await axios.get(url, { headers: { Authorization: 'Bearer ' + token } });
-    const res = await axios.get(`https://www.reddit.com/${filter}/.json?count=20`, {
-      headers: {
-        Authorization: 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo='
-      }
-    });
-    setPosts(res.data.data.children);
+    try {
+      const res = await axios.get(`https://oauth.reddit.com/${filter}/.json`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setPosts(res.data.data.children);
+    } catch (e) {
+      console.warn('here', e);
+    }
   }
-
-  // Search
-
-  const [query, setQuery] = useState('')
 
   async function search() {
     const url = `https://www.reddit.com/search/.json?q=${query}`
@@ -70,8 +73,8 @@ function HomeScreen({ navigation }) {
 
   return (
 
-    <ScrollView
-      contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+    <View
+      style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Layout style={styles.container}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <View style={{ flex: 1, flexDirection: 'row', width: '100%', paddingTop: 10, paddingLeft: 10 }}>
@@ -88,8 +91,6 @@ function HomeScreen({ navigation }) {
 
             />
           </View>
-          {/* <ButtonGroup>
-        </ButtonGroup> */}
           <Text></Text>
           <ButtonGroup>
             <Button
@@ -97,7 +98,6 @@ function HomeScreen({ navigation }) {
               title="New"
               appearance='ghost'
               status='basic'
-            // style={styles.filters}
             />
 
             <Button
@@ -105,7 +105,6 @@ function HomeScreen({ navigation }) {
               title="Best"
               appearance='ghost'
               status='basic'
-            // style={styles.filters}
             />
 
             <Button
@@ -113,7 +112,6 @@ function HomeScreen({ navigation }) {
               title="Top"
               appearance='ghost'
               status='basic'
-            // style={styles.filters}
             />
 
             <Button
@@ -121,7 +119,6 @@ function HomeScreen({ navigation }) {
               title="Controversial"
               appearance='ghost'
               status='basic'
-            // style={styles.filters}
             />
 
             <Button
@@ -136,11 +133,11 @@ function HomeScreen({ navigation }) {
           <Text style={styles.filters}>Posts ordered by: {filter}</Text>
           <Text></Text>
           {posts.length > 0 &&
-            <PostsManager navigation={navigation} posts={posts} />
+            <PostsManager posts={posts} token={token} />
           }
         </View>
       </Layout>
-    </ScrollView>
+    </View>
   );
 }
 

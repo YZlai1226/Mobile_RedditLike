@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, StyleSheet } from 'react-native';
-import { Card, Layout, Text } from '@ui-kitten/components';
-import datetime from 'react-datetime';
+import { StyleSheet } from 'react-native';
+import { Card, Text } from '@ui-kitten/components';
 
 function EachComment(props) {
   const [ date, setDate ] = useState()

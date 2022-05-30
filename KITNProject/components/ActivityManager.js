@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Text, View, StyleSheet } from 'react-native';
 import EachActivity from './EachActivity';
-import { Layout } from '@ui-kitten/components';
 
 function ActivityManager(props) {
 
@@ -9,9 +7,8 @@ function ActivityManager(props) {
     <>
       {props.comments.length > 0 &&
         props.comments.map((comment) => {
-          {/* console.log('in comments manager each comment is ', comment) */ }
           return (
-                <EachActivity {...comment} ></EachActivity>
+                <EachActivity key={comment.data.id} {...comment} ></EachActivity>
           )
         })}
     </>

@@ -1,9 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Button, View, ScrollView, Text, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import PostsManager from '../components/PostsManager';
-import datetime from 'react-datetime';
 import { ButtonGroup, Layout } from '@ui-kitten/components';
 
 
@@ -49,47 +48,47 @@ function SubredditScreen({ route, navigation }) {
   return (
     <ScrollView>
       <Layout style={styles.container}>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <View style={styles.banner}>
-          <Text style={styles.title}>{subTitle}</Text>
-          <Text style={styles.date}>created on {finalDate}</Text>
-          <Text style={{ color: 'white' }}>{subDes}</Text>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={styles.banner}>
+            <Text style={styles.title}>{subTitle}</Text>
+            <Text style={styles.date}>created on {finalDate}</Text>
+            <Text style={{ color: 'white' }}>{subDes}</Text>
+          </View>
+
+          {/* Filters */}
+          <View>
+            <ButtonGroup>
+              <Button
+                onPress={() => setFilter('new')}
+                title="New"
+              />
+
+              <Button
+                onPress={() => setFilter('best')}
+                title="Best"
+              />
+
+              <Button
+                onPress={() => setFilter('top')}
+                title="Top"
+              />
+
+              <Button
+                onPress={() => setFilter('controversial')}
+                title="Controversial"
+              />
+
+              <Button
+                onPress={() => setFilter('rising')}
+                title="Rising"
+              />
+            </ButtonGroup>
+          </View>
+
+          {subPosts.length > 0 &&
+            <PostsManager navigation={navigation} posts={subPosts} />
+          }
         </View>
-
-        {/* Filters */}
-        <View>
-          <ButtonGroup>
-            <Button
-              onPress={() => setFilter('new')}
-              title="New"
-            />
-
-            <Button
-              onPress={() => setFilter('best')}
-              title="Best"
-            />
-
-            <Button
-              onPress={() => setFilter('top')}
-              title="Top"
-            />
-
-            <Button
-              onPress={() => setFilter('controversial')}
-              title="Controversial"
-            />
-
-            <Button
-              onPress={() => setFilter('rising')}
-              title="Rising"
-            />
-          </ButtonGroup>
-        </View>
-
-        {subPosts.length > 0 &&
-          <PostsManager navigation={navigation} posts={subPosts} />
-        }
-      </View>
       </Layout>
     </ScrollView>
   );
