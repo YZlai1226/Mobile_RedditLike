@@ -61,7 +61,6 @@ function EachPost(props) {
         </Text>
         <Text></Text>
 
-        {/* {[".gif", ".jpg"].some(el => props.post.data.url_overridden_by_dest?.includes(el)) && */}
         {[".gif", ".jpg"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
           <TouchableOpacity onPress={() =>
             navigation.navigate('Post', {

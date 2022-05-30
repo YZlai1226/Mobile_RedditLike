@@ -75,17 +75,21 @@ function PostScreen(props) {
               })}
           </View>
           <Text></Text>
-          {[".gif", ".jpg"].some(el => post.url_overridden_by_dest?.includes(el)) &&
+          {[".gif", ".jpg"].some(el => post.preview?.images[0]?.source.url.includes(el)) &&
             <Image
-              style={{ width: 'auto', height: 200 }}
+            style={styles.image}
               source={{
-                uri: post.url_overridden_by_dest
+                headers: { Authorization: `bearer ${props.token}` },
+                uri: post.preview?.images[0]?.source.url.replaceAll('amp;', '')
               }}
             />
-          }
+        }
+        <Text></Text>
+          <Text>{post.selftext}</Text>
+
           <Text style={{ color: 'lightgray', fontStyle: 'italic' }}
-            onPress={() => Linking.openURL(post.url_overridden_by_dest)}>
-            {post.url_overridden_by_dest}
+            onPress={() => Linking.openURL(post.preview?.images[0]?.source.url)}>
+            {post.preview?.images[0]?.source.url}
           </Text>
           <Text></Text>
           <Text>Comments</Text>
@@ -97,4 +101,13 @@ function PostScreen(props) {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    width: 'auto',
+    height: 300,
+  },
+})
+
 export default PostScreen;
+
