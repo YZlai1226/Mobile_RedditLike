@@ -46,7 +46,7 @@ function EachPost(props) {
         <Text></Text>
 
         <Text
-          category='h5'
+          category="h5"
           onPress={() => navigation.navigate('Post', {
             postId: props.post.data.name
           })}
@@ -54,7 +54,7 @@ function EachPost(props) {
           {props.post.data?.title}
         </Text>
         <Text
-          category='h8'
+          category="h8"
 
         >
           Posted by {props.post.data?.author}
