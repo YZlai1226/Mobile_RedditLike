@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, Text, View } from 'react-native';
+import { Image, StyleSheet, Button, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { Text } from '@ui-kitten/components';
 
 
 // COMPONENTS

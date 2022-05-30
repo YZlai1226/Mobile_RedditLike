@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#3366FF',
   },
+  subRedditFont: {
+    fontSize: 15,
+    color: '#0095FF'
+  },
+  author: {
+    fontSize: 17
+  }
 });
 
 function EachPost(props) {
@@ -32,8 +39,7 @@ function EachPost(props) {
     <Layout style={styles.container} level='1'>
       <Card style={styles.card} >
         <Text
-          category='h7'
-          style={{ color: '#0095FF' }}
+          style={styles.subRedditFont}
           onPress={() => {
             navigation.navigate('Subreddit',
               {
@@ -43,7 +49,7 @@ function EachPost(props) {
         >
           {props.post.data?.subreddit_name_prefixed}
         </Text>
-        <Text></Text>
+        {/* <Text></Text> */}
 
         <Text
           category="h5"
@@ -54,8 +60,7 @@ function EachPost(props) {
           {props.post.data?.title}
         </Text>
         <Text
-          category="h8"
-
+          style={styles.author}
         >
           Posted by {props.post.data?.author}
         </Text>
