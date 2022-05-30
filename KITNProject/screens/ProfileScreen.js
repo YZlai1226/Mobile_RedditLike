@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Button, Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ActivityManager from '../components/ActivityManager';
+import ActivityManager from '../components/activities/ActivitiesManager';
 import { useNavigation } from '@react-navigation/native';
 import Context from '../context';
 

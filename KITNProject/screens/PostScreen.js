@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { View, ScrollView, Image, Linking, StyleSheet } from 'react-native';
 import axios from 'axios';
-import CommentsManager from '../components/CommentsManager';
+import CommentsManager from '../components/comments/CommentsManager';
 import { Card, Text } from '@ui-kitten/components';
 import Context from '../context';
 

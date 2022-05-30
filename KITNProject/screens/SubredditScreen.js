@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Button, View, ScrollView, Text, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
-import PostsManager from '../components/PostsManager';
+import PostsManager from '../components/posts/PostsManager';
 import { ButtonGroup, Layout } from '@ui-kitten/components';
 
 
@@ -46,7 +46,7 @@ function SubredditScreen({ route, navigation }) {
   }, [filter])
 
   return (
-    <ScrollView>
+    <View>
       <Layout style={styles.container}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.banner}>
@@ -90,7 +90,7 @@ function SubredditScreen({ route, navigation }) {
           }
         </View>
       </Layout>
-    </ScrollView>
+    </View>
   );
 }
 export default SubredditScreen;
