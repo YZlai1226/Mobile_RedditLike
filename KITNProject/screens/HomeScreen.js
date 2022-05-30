@@ -3,12 +3,15 @@ import { Image, StyleSheet, Button, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+
 // COMPONENTS
-import PostsManager from './../components/PostsManager.js';
+import PostsManager from '../components/posts/PostsManager.js';
 
 // STYLE
 import Logo from './../assets/LogoWhite.png';
-import { Layout, ButtonGroup, Input } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
+import SearchBar from '../components/SearchBar.js';
+import Filters from '../components/Filters.js';
 
 function LogoTitle() {
   return (
@@ -73,76 +76,22 @@ function HomeScreen(props) {
 
   return (
 
-    <View
-      style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Layout style={styles.container}>
-        <View style={{ flex: 1, flexDirection: 'column' }}>
-          <View style={{ flex: 1, flexDirection: 'row', width: '100%', paddingTop: 10, paddingLeft: 10 }}>
-            <Input
-              placeholder='Search'
-              value={query}
-              onChangeText={nextQuery => setQuery(nextQuery)}
-              style={{ width: '85%' }}
-            />
-
-            <Button
-              onPress={() => search()}
-              title="Go"
-
-            />
-          </View>
-          <Text></Text>
-          <ButtonGroup>
-            <Button
-              onPress={() => setFilter('new')}
-              title="New"
-              appearance='ghost'
-              status='basic'
-            />
-
-            <Button
-              onPress={() => setFilter('best')}
-              title="Best"
-              appearance='ghost'
-              status='basic'
-            />
-
-            <Button
-              onPress={() => setFilter('top')}
-              title="Top"
-              appearance='ghost'
-              status='basic'
-            />
-
-            <Button
-              onPress={() => setFilter('controversial')}
-              title="Controversial"
-              appearance='ghost'
-              status='basic'
-            />
-
-            <Button
-              onPress={() => setFilter('rising')}
-              title="Rising"
-              appearance='ghost'
-              status='basic'
-            // style={styles.filters}
-            />
-          </ButtonGroup>
-
-          <Text style={styles.filters}>Posts ordered by: {filter}</Text>
-          <Text></Text>
-          {posts.length > 0 &&
-            <PostsManager posts={posts} token={token} />
-          }
-        </View>
-      </Layout>
-    </View>
+    <Layout style={styles.layout}>
+      {/* <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}> */}
+      <SearchBar setQuery={setQuery} query={query} search={search} />
+      {/* </View> */}
+      <Filters setFilter={setFilter} />
+      <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+      <Text></Text>
+      {posts.length > 0 &&
+        <PostsManager posts={posts} token={token} />
+      }
+    </Layout >
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  layout: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
