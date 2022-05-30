@@ -57,7 +57,7 @@ function EachPost(props) {
           category='h8'
 
         >
-          Posted by {props.post.data?.author_fullname}
+          Posted by {props.post.data?.author}
         </Text>
         <Text></Text>
 

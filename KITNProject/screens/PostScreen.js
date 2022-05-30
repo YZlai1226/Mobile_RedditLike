@@ -54,7 +54,7 @@ function PostScreen(props) {
     <ScrollView>
       <Card>
         <View>
-          <Text style={{ color: 'lightgray', fontStyle: 'italic', color: '#94CBFF' }}>{post.subreddit_name_prefixed} ‧ posted by {post.author_fullname}</Text>
+          <Text style={{ color: 'lightgray', fontStyle: 'italic', color: '#94CBFF' }}>{post.subreddit_name_prefixed} ‧ posted by {post.author}</Text>
           <Text category='h6'>{post.title}</Text>
           <Text></Text>
           <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
