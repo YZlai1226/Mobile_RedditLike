@@ -88,11 +88,11 @@ function HomeScreen(props) {
             <Filters setFilter={setFilter} />
           {/* </Scrollview> */}
           <Text style={styles.filters}>Posts ordered by: {filter}</Text>
-        </View>
         <Text></Text>
         {posts.length > 0 &&
           <PostsManager posts={posts} token={token} />
         }
+        </View>
       </Layout >
     </ScrollView>
   );
