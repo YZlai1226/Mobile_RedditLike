@@ -47,13 +47,12 @@ function SubredditScreen({ route, navigation }) {
   }, [filter])
 
   return (
-    <View>
       <Layout style={styles.container}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}> */}
           <View style={styles.banner}>
             <Text style={styles.title}>{subTitle}</Text>
             <Text style={styles.date}>created on {finalDate}</Text>
-            <Text style={{ color: 'white' }}>{subDes}</Text>
+            <Text style={{ color: 'black' }}>{subDes}</Text>
           </View>
 
           <Filters setFilter={setFilter} />
@@ -61,9 +60,8 @@ function SubredditScreen({ route, navigation }) {
           {subPosts.length > 0 &&
             <PostsManager navigation={navigation} posts={subPosts} />
           }
-        </View>
+        {/* </View> */}
       </Layout>
-    </View>
   );
 }
 export default SubredditScreen;
