@@ -8,15 +8,18 @@ function PostsManager(props) {
     <>
       {props.posts.length > 0 &&
         <FlatList
+          keyExtractor={(post, index) => index.toString()}
           data={props.posts}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <EachPost key={item.data.id} post={item} token={props.token} >item is {item.data.id}</EachPost>
           )}
-          keyExtractor={post => post.id}
+          // keyExtractor={post => post.id}
+          // keyExtractor={(post, index) => {
+          //   return post.id;
+          // }}
         />
       }
     </>
   );
 }
 export default PostsManager;
-

@@ -54,9 +54,7 @@ function SubredditScreen({ route, navigation }) {
             <Text style={styles.date}>created on {finalDate}</Text>
             <Text style={{ color: 'black' }}>{subDes}</Text>
           </View>
-
           <Filters setFilter={setFilter} />
-
           {subPosts.length > 0 &&
             <PostsManager navigation={navigation} posts={subPosts} />
           }
