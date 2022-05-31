@@ -27,7 +27,7 @@ function UserProfile() {
       })
       setUserData(res.data)
     } catch {
-      console.log('error');
+      console.warn('error');
     }
   }
   async function GetUserData() {
@@ -40,7 +40,7 @@ function UserProfile() {
       })
       setUserData(res.data)
     } catch {
-      console.log('data fetching failed');
+      console.warn('data fetching failed');
     }
   }
   async function GetUserActivity() {
@@ -50,8 +50,8 @@ function UserProfile() {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         setUserActivity(res.data.data.children)
-      } catch {
-        console.log('User activity fetching failed');
+      } catch (e) {
+        console.warn('User activity fetching failed', e);
       }
     }
   }
@@ -62,7 +62,7 @@ function UserProfile() {
       context.setIsLoggedIn(false);
       context.setAccessToken('');
     } catch (exception) {
-      console.log(exception);
+      console.warn(exception);
     }
   }
 

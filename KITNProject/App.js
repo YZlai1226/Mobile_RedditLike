@@ -40,7 +40,6 @@ export default function App() {
       if (res) {
         setIsLoggedIn(true);
         setAccessToken(res);
-        console.log('token is', res)
       } else {
         setIsLoggedIn(false);
       }

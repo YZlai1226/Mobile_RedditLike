@@ -26,7 +26,7 @@ export default function LoginScreen() {
     tokenEndpoint: 'https://www.reddit.com/api/v1/access_token',
   };
   const clientId = '42EUJ0kpJkr4HpsTFeMtRA'
-  const redirectUri = 'exp://10.41.97.206:19001'
+  const redirectUri = 'exp://192.168.0.16:19000'
 
 
   const [request, response, promptAsync] = useAuthRequest(

@@ -66,34 +66,33 @@ function EachPost(props) {
         </Text>
         <Text></Text>
 
-        {[".jpg", "png"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
+        {([".gif"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
           <TouchableOpacity onPress={() =>
             navigation.navigate('Post', {
               postId: props.post.data.name
             })}>
             <Image
-              style={{ width: 'auto', height: 200 }}
-              source={{
-                headers: { Authorization: `bearer ${props.token}` },
-                uri: props.post.data.preview?.images[0]?.source.url.replaceAll(`amp;`, ``)
-              }}
-            />
-          </TouchableOpacity>
-        }
-        {[".gif"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
-          <TouchableOpacity onPress={() =>
-            navigation.navigate('Post', {
-              postId: props.post.data.name
-            })}>
-            <Image
-              style={{ width: 'auto', height: 200 }}
+              style={{ width: 'auto', height: 360 }}
               source={{
                 headers: { Authorization: `bearer ${props.token}` },
                 uri: props.post.data.url_overridden_by_dest
               }}
             />
           </TouchableOpacity>
-        }
+        ) || ([".jpg", "png"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
+          <TouchableOpacity onPress={() =>
+            navigation.navigate('Post', {
+              postId: props.post.data.name
+            })}>
+            <Image
+              style={{ width: 'auto', height: 360 }}
+              source={{
+                headers: { Authorization: `bearer ${props.token}` },
+                uri: props.post.data.preview?.images[0]?.source.url.replaceAll(`amp;`, ``)
+              }}
+            />
+          </TouchableOpacity>
+          )}
 
       </Card>
       {/* } */}

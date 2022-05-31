@@ -29,7 +29,6 @@ function PostScreen(props) {
 
   useEffect(() => {
     if (subReddit !== undefined) {
-      console.log(`https://oauth.reddit.com/r/${subReddit}/comments/${postId.substring(3)}.json`)
       axios.get('https://oauth.reddit.com/r/' + subReddit + '/comments/' + postId.substring(3) + '.json', {
         headers: {
           Authorization: `Bearer ${context.accessToken}`
@@ -48,6 +47,7 @@ function PostScreen(props) {
           <Text style={{ color: 'lightgray', fontStyle: 'italic', color: '#94CBFF' }}>{post.subreddit_name_prefixed} ‧ posted by {post.author}</Text>
           <Text category='h6'>{post.title}</Text>
           <Text></Text>
+          <Text>{post.selftext}</Text>
           <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {rewards.length > 0 &&
               rewards.map((reward) => {
@@ -96,7 +96,7 @@ function PostScreen(props) {
 const styles = StyleSheet.create({
   image: {
     width: 'auto',
-    height: 300,
+    height: 400,
   },
 })
 
