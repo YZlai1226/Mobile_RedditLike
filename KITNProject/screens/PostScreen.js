@@ -17,7 +17,6 @@ function PostScreen(props) {
   const context = useContext(Context);
 
   async function getPost() {
-    console.log('postId is', postId)
     const res = await axios.get('https://api.reddit.com/api/info/?id=' + postId)
     setPost(res.data.data.children[0].data)
     setSubReddit(res.data.data.children[0].data?.subreddit)
@@ -80,7 +79,7 @@ function PostScreen(props) {
             style={styles.image}
               source={{
                 headers: { Authorization: `bearer ${props.token}` },
-                uri: post.preview?.images[0]?.source.url.replaceAll('amp;', '')
+                uri: post.preview?.images[0]?.source.url.replace('amp;', '')
               }}
             />
         }
