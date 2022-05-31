@@ -80,7 +80,7 @@ function PostScreen(props) {
             style={styles.image}
               source={{
                 headers: { Authorization: `bearer ${props.token}` },
-                uri: post.preview?.images[0]?.source.url.replaceAll('amp;', '')
+                uri: post.preview?.images[0]?.source.url.replace(`amp;`, ``)
               }}
             />
         }

@@ -75,7 +75,7 @@ function EachPost(props) {
               style={{ width: 'auto', height: 200 }}
               source={{
                 headers: { Authorization: `bearer ${props.token}` },
-                uri: props.post.data.preview?.images[0]?.source.url.replaceAll('amp;', '')
+                uri: props.post.data.preview?.images[0]?.source.url.replace(`amp;`, ``)
               }}
             />
           </TouchableOpacity>

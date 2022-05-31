@@ -49,15 +49,13 @@ function SubredditScreen({ route, navigation }) {
   return (
     <View>
       <Layout style={styles.container}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View>
           <View style={styles.banner}>
             <Text style={styles.title}>{subTitle}</Text>
             <Text style={styles.date}>created on {finalDate}</Text>
             <Text style={{ color: 'white' }}>{subDes}</Text>
           </View>
-
           <Filters setFilter={setFilter} />
-
           {subPosts.length > 0 &&
             <PostsManager navigation={navigation} posts={subPosts} />
           }

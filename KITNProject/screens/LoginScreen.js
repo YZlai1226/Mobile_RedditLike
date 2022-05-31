@@ -26,9 +26,9 @@ const context = useContext(Context);
 
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: "dsLdGDrhhA9LOjaNVngHsA",
+      clientId: "XFWAmnjJ12hDFqZc2w8eXg",
       scopes: ['*'],
-      redirectUri: "exp://192.168.1.41:19000"
+      redirectUri: "exp://10.41.97.225:19000"
     },
     discovery
   );
@@ -42,12 +42,12 @@ const context = useContext(Context);
         data: qs.stringify({
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: "exp://192.168.1.41:19000"
+          redirect_uri: "exp://10.41.97.225:19000"
         }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           // 'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo=' CODE DE NICOLAS
-          'Authorization': 'Basic ZHNMZEdEcmhoQTlMT2phTlZuZ0hzQTo='
+          'Authorization': 'Basic WEZXQW1uakoxMmhERnFaYzJ3OGVYZzo='
         },
       });
       if (res.data.access_token) {
