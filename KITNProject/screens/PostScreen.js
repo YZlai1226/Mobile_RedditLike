@@ -17,7 +17,6 @@ function PostScreen(props) {
   const context = useContext(Context);
 
   async function getPost() {
-    console.log('postId is', postId)
     const res = await axios.get('https://api.reddit.com/api/info/?id=' + postId)
     setPost(res.data.data.children[0].data)
     setSubReddit(res.data.data.children[0].data?.subreddit)
