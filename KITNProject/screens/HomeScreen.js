@@ -78,6 +78,7 @@ function HomeScreen(props) {
     const url = `https://www.reddit.com/search/.json?q=${query}`
     const response = await axios.get(url);
     setPosts(response.data.data.children);
+    setFilter(query);
   }
 
   return (
@@ -86,10 +87,8 @@ function HomeScreen(props) {
       <Layout style={styles.layout}>
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <SearchBar setQuery={setQuery} query={query} search={search} />
-          {/* <Scrollview horizontal={true}> */}
             <Filters setFilter={setFilter} />
-          {/* </Scrollview> */}
-          <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+          <Text style={styles.filters}>Posts filtered by: {filter}</Text>
         <Text></Text>
         {posts.length > 0 &&
           <PostsManager posts={posts} token={token} />

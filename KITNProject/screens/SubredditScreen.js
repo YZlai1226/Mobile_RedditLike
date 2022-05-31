@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, View, ScrollView, Text, StyleSheet, Image } from 'react-native';
+import { Button, Image, View, ScrollView, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
 import PostsManager from '../components/posts/PostsManager';
 import { Layout } from '@ui-kitten/components';
@@ -31,7 +31,7 @@ function SubredditScreen({ route, navigation }) {
       .then((response) => {
         setSubTitle(response.data.data?.title)
         setSubDes(response.data.data?.public_description)
-        setSubImage(response.data.data.banner_img)
+        setSubImage(response.data.data.icon_img)
         setUnixDate(response.data.data.created_utc)
       })
   }, []);
@@ -47,39 +47,54 @@ function SubredditScreen({ route, navigation }) {
   }, [filter])
 
   return (
-      <Layout style={styles.container}>
-        {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}> */}
-          <View style={styles.banner}>
-            <Text style={styles.title}>{subTitle}</Text>
-            <Text style={styles.date}>created on {finalDate}</Text>
-            <Text style={{ color: 'black' }}>{subDes}</Text>
-          </View>
+    <ScrollView>
+      <Layout style={styles.layout}>
+        {/* <View style={{ backgroundColor: '#87CEFA' /*flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}> */}
+        {/* <View style={{ flex: 1, flexDirection: 'column' }}> */}
+        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 20 }}>
+        <Image
+          style={{ width: 50, height: 50, margin: 15 }}
+          source={{
+            uri: subImage
+          }}
+        />
+          <Text style={styles.title}>{subTitle}</Text>
+          <Text style={styles.date}>created on {finalDate}</Text>
+          <Text style={{ color: '#3b3c3d' }}>{subDes}</Text>
+        </View>
+        {/* </View> */}
+        <View style={styles.filters} >
           <Filters setFilter={setFilter} />
-          {subPosts.length > 0 &&
-            <PostsManager navigation={navigation} posts={subPosts} />
-          }
+        </View>
+        {subPosts.length > 0 &&
+          <PostsManager navigation={navigation} posts={subPosts} />
+        }
         {/* </View> */}
       </Layout>
+    </ScrollView>
+
   );
 }
 export default SubredditScreen;
 
 const styles = StyleSheet.create({
-  banner: {
-    // backgroundColor: 'blue',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+  layout: {
+    flexDirection: 'column',
+    backgroundColor: '#87CEFA',
   },
   title: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: 'white'
+    color: '#3b3c3d'
   },
   date: {
     color: 'gray',
     fontStyle: 'italic',
     fontSize: 10,
-    color: 'white'
+    color: '#3b3c3d'
+  },
+  filters: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
   }
 });
