@@ -8,7 +8,7 @@ function SearchBar(props) {
       <Input
         placeholder='Search'
         value={props.query}
-        onChangeText={nextQuery => props.setQuery(nextQuery)}
+        onChangeText={(nextQuery) => props.setQuery(nextQuery)}
         status='basic'
         style={{ width: '85%', zIndex: 2 }}
       />

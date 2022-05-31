@@ -14,21 +14,26 @@ import Context from './../context.js';
 
 export default function LoginScreen() {
 
-const context = useContext(Context);  
+  const context = useContext(Context);
 
   WebBrowser.maybeCompleteAuthSession();
+
+  const base64 = require('base-64');
 
   //Endpoint
   const discovery = {
     authorizationEndpoint: 'https://www.reddit.com/api/v1/authorize',
     tokenEndpoint: 'https://www.reddit.com/api/v1/access_token',
   };
+  const clientId = '42EUJ0kpJkr4HpsTFeMtRA'
+  const redirectUri = 'exp://10.41.97.206:19001'
+
 
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: "XFWAmnjJ12hDFqZc2w8eXg",
+      clientId: clientId,
       scopes: ['*'],
-      redirectUri: "exp://10.41.97.225:19000"
+      redirectUri: redirectUri
     },
     discovery
   );
@@ -42,13 +47,12 @@ const context = useContext(Context);
         data: qs.stringify({
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: "exp://10.41.97.225:19000"
+          redirect_uri: redirectUri,
         }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          // 'Authorization': 'Basic RlF5bGd4djBDdHdKTDVwa3pHd1o1QTo=' CODE DE NICOLAS
-          'Authorization': 'Basic WEZXQW1uakoxMmhERnFaYzJ3OGVYZzo='
-        },
+          'Authorization': 'Basic NDJFVUowa3BKa3I0SHBzVEZlTXRSQTo=',
+        }
       });
       if (res.data.access_token) {
         await AsyncStorage.setItem('@access_token', res.data.access_token);
@@ -82,7 +86,7 @@ const context = useContext(Context);
           onPress={() => {
             promptAsync();
           }}
-          style={{marginBottom: 20}}
+          style={{ marginBottom: 20 }}
         >
           Login
         </Button>

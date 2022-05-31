@@ -1,7 +1,7 @@
-// import { useEffect } from "react/cjs/react.production.min"
+import getPosts from "./HomeScreen"
 
 test('HomeScreen test', async () => {
-    const data = await getLatest();
+    const data = await getPosts();
     expect(data).toBeDefined()
 }
 )

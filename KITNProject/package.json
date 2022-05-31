@@ -21,6 +21,7 @@
     "@ui-kitten/eva-icons": "^5.1.2",
     "@ui-kitten/moment": "^5.1.2",
     "axios": "^0.27.2",
+    "base-64": "^1.0.0",
     "expo": "~45.0.0",
     "expo-auth-session": "~3.6.1",
     "expo-dev-client": "^0.9.6",
@@ -43,6 +44,7 @@
     "react-native-web": "0.17.7",
     "react-navigation": "^4.4.4",
     "uri-scheme": "^1.0.120",
+    "utf8": "^3.0.0",
     "webpack-dev-server": "~3.11.0"
   },
   "devDependencies": {

@@ -70,7 +70,7 @@ function HomeScreen(props) {
       });
       setPosts(res.data.data.children);
     } catch (e) {
-      console.warn('here', e);
+      console.warn('setPosts', e);
     }
   }
 
