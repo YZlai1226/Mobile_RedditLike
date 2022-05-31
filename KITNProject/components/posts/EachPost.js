@@ -66,7 +66,7 @@ function EachPost(props) {
         </Text>
         <Text></Text>
 
-        {[".jpg", "png"].some(el => props.post.data.url_overridden_by_dest.includes(el)) &&
+        {[".jpg", "png"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
           <TouchableOpacity onPress={() =>
             navigation.navigate('Post', {
               postId: props.post.data.name
@@ -80,7 +80,7 @@ function EachPost(props) {
             />
           </TouchableOpacity>
         }
-        {[".gif"].some(el => props.post.data.url_overridden_by_dest.includes(el)) &&
+        {[".gif"].some(el => props.post.data.preview?.images[0]?.source.url.includes(el)) &&
           <TouchableOpacity onPress={() =>
             navigation.navigate('Post', {
               postId: props.post.data.name
