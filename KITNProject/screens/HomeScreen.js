@@ -7,7 +7,7 @@ import { Text } from '@ui-kitten/components';
 
 // COMPONENTS
 import PostsManager from '../components/posts/PostsManager.js';
-import VirtualizedScrollView from './../components/VirtualizedScrollView'
+// import VirtualizedScrollView from './../components/VirtualizedScrollView'
 
 // STYLE
 import Logo from './../assets/LogoWhite.png';
@@ -83,7 +83,7 @@ function HomeScreen(props) {
 
   return (
 
-    <VirtualizedScrollView>
+    <ScrollView>
       <Layout style={styles.layout}>
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <SearchBar setQuery={setQuery} query={query} search={search} />
@@ -95,7 +95,7 @@ function HomeScreen(props) {
         }
         </View>
       </Layout >
-    </VirtualizedScrollView>
+    </ScrollView>
   );
 }
 
