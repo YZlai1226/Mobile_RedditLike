@@ -6,7 +6,7 @@ function EachComment(props) {
   const [ date, setDate ] = useState()
 
   useEffect(() => {
-    const date = new Date(props.data.created_utc * 1000);
+    const date = new Date(props.comment.data.created_utc * 1000);
     const realDate = date.toLocaleDateString("en-US");
     setDate(realDate)
   }, []);
@@ -14,11 +14,11 @@ function EachComment(props) {
   return (
         <Card style={ styles.card }>
           {/* <View style={{ display:'flex', flexDirection:'row' }}> */}
-            <Text style={styles.author}>{props.data.author}</Text>
+            <Text style={styles.author}>{props.comment.data.author}</Text>
             <Text style={styles.date}>commented on {date}</Text>
           {/* </View> */}
           <Text></Text>
-          <Text>{props.data.body}</Text>
+          <Text>{props.comment.data.body}</Text>
         </Card>
   );
 }

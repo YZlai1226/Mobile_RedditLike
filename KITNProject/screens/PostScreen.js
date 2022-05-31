@@ -5,7 +5,7 @@ import axios from 'axios';
 import CommentsManager from '../components/comments/CommentsManager';
 import { Card, Text } from '@ui-kitten/components';
 import Context from '../context';
-
+import VirtualizedScrollView from './../components/VirtualizedScrollView'
 
 function PostScreen(props) {
   const { postId } = props.route.params;
@@ -29,6 +29,7 @@ function PostScreen(props) {
 
   useEffect(() => {
     if (subReddit !== undefined) {
+      console.log(`https://oauth.reddit.com/r/${subReddit}/comments/${postId.substring(3)}.json`)
       axios.get('https://oauth.reddit.com/r/' + subReddit + '/comments/' + postId.substring(3) + '.json', {
         headers: {
           Authorization: `Bearer ${context.accessToken}`
@@ -41,7 +42,7 @@ function PostScreen(props) {
   }, [subReddit]);
 
   return (
-    <ScrollView>
+    <VirtualizedScrollView>
       <Card>
         <View>
           <Text style={{ color: 'lightgray', fontStyle: 'italic', color: '#94CBFF' }}>{post.subreddit_name_prefixed} ‧ posted by {post.author}</Text>
@@ -88,7 +89,7 @@ function PostScreen(props) {
           }
         </View>
       </Card>
-    </ScrollView>
+    </VirtualizedScrollView>
   );
 }
 
