@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ActivityManager from '../components/activities/ActivitiesManager';
 import { useNavigation } from '@react-navigation/native';
 import Context from '../context';
-import { Text } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 
 function UserProfile() {
   const [token, setToken] = useState('');
@@ -74,7 +74,7 @@ function UserProfile() {
 
   if (UserData) {
     return (
-      <View>
+      <Layout>
         <View style={{
           flexDirection: 'row',
           marginTop: "5%",
@@ -130,7 +130,7 @@ function UserProfile() {
             <ActivityManager comments={UserActivity} />}
         </ScrollView>
 
-      </View>
+      </Layout>
     )
   } else {
     return (
