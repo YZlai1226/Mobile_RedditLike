@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, View, ScrollView, LogBox } from 'react-native';
+import { Image, StyleSheet, View, ScrollView, LogBox } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Text } from '@ui-kitten/components';
@@ -84,11 +84,13 @@ function HomeScreen(props) {
 
     <VirtualizedScrollView>
       <Layout style={styles.layout}>
-        {/* <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}> */}
-        <SearchBar setQuery={setQuery} query={query} search={search} />
-        {/* </View> */}
-        <Filters setFilter={setFilter} />
-        <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <SearchBar setQuery={setQuery} query={query} search={search} />
+          {/* <Scrollview horizontal={true}> */}
+            <Filters setFilter={setFilter} />
+          {/* </Scrollview> */}
+          <Text style={styles.filters}>Posts ordered by: {filter}</Text>
+        </View>
         <Text></Text>
         {posts.length > 0 &&
           <PostsManager posts={posts} token={token} />

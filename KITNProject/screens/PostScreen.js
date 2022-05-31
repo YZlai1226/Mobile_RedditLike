@@ -40,15 +40,6 @@ function PostScreen(props) {
     }
   }, [subReddit]);
 
-  // useEffect(() => {
-  //   if (subReddit !== undefined) {
-  //     axios.get('https://www.reddit.com/r/' + subReddit + '/comments/' + postId.substring(3) + '.json')
-  //       .then((response) => {
-  //         setComments(response.data[1].data.children)
-  //       })
-  //   }
-  // }, [subReddit]);
-
   return (
     <ScrollView>
       <Card>
@@ -86,10 +77,10 @@ function PostScreen(props) {
         <Text></Text>
           <Text>{post.selftext}</Text>
 
-          <Text style={{ color: 'lightgray', fontStyle: 'italic' }}
+          {/* <Text style={{ color: 'lightgray', fontStyle: 'italic' }}
             onPress={() => Linking.openURL(post.preview?.images[0]?.source.url)}>
             {post.preview?.images[0]?.source.url}
-          </Text>
+          </Text> */}
           <Text></Text>
           <Text>Comments</Text>
           {comments.length > 0 &&
