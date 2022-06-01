@@ -45,7 +45,7 @@ export default function LoginScreen() {
         method: 'post',
         url: url,
         data: qs.stringify({
-          grant_type: 'authorization_code',s
+          grant_type: 'authorization_code',
           code: code,
           redirect_uri: redirectUri,
         }),
